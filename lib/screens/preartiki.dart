@@ -194,6 +194,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
 
   CartController cartController = Get.find();
   UserController userController = Get.find();
+  ProductModel productModel = ProductModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -493,36 +494,6 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             ),
           ),
           SizedBox(height: 30),
-          //  GestureDetector(
-          //    onTap:(){
-          //      ProductModel product = ProductModel(
-          //        brand: "Brandname",
-          //        id: "1112",
-          //        image: "https://www.freeimages.com/istockphoto/file?id=361995295&path=photo/building-a-strong-team-wooden-blocks-with-people-icon-on-pink-background-human-gm1227412970-361995295&function=search&location=right&keyword=link&page=1&sharedid=link&getty=1227412970",
-          //        model: "aeer",
-          //        name: "rvr",
-          //        price: 12,
-          //      );
-          //      cartController .addProductToCart(product);
-          //    },
-          //               child: Container(
-          //                                   height: 150,
-          //                                   child: CachedNetworkImage(
-          //                                     imageUrl: "https://www.freeimages.com/istockphoto/file?id=361995295&path=photo/building-a-strong-team-wooden-blocks-with-people-icon-on-pink-background-human-gm1227412970-361995295&function=search&location=right&keyword=link&page=1&sharedid=link&getty=1227412970",
-          //                                     progressIndicatorBuilder: (context,
-          //                                             url, downloadProgress) =>
-          //                                         SpinKitFadingCircle(
-          //                                       color: Colors.red,
-          //                                       size: 20,
-          //                                     ),
-          //                                     //placeholder: (context, url) => CircularProgressIndicator(),
-          //                                     errorWidget:
-          //                                         (context, url, error) =>
-          //                                             Icon(Icons.error),
-          //                                   ),
-          //                                 ),
-          // ),
-
           Expanded(
             child: //RefreshIndicator ( child:
 
@@ -630,7 +601,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                         products[index].get("mo").toString();
                                     String katBr =
                                         products[index].get("kb").toString();
-                                        String id =
+                                    String id =
                                         products[index].get("id").toString();
                                     String cijena =
                                         products[index].get("c").toString();
@@ -640,8 +611,15 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                         products[index].get("l").toString();
                                     String opis =
                                         products[index].get("o").toString();
+
                                     List<String> array_list =
                                         List.from(products[index].get("u"));
+                                    productModel.brand = marka;
+                                    productModel.id = id;
+                                    productModel.name = naziv;
+                                    productModel.price = double.parse(cijena);
+                                    productModel.model = model;
+                                    productModel.image = array_list[0];
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -838,27 +816,12 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                                             ),
                                                             TextButton(
                                                                 onPressed: () {
-                                                                  ProductModel
-                                                                      product =
-                                                                      ProductModel(
-                                                                    brand:
-                                                                        marka,
-                                                                    id: id,
-                                                                    name: naziv,
-                                                                    price: double
-                                                                        .parse(
-                                                                            cijena),
-                                                                    model:
-                                                                        model,
-                                                                    image:
-                                                                        array_list[
-                                                                            0],
-                                                                  );
                                                                   print(
-                                                                      product.id);
+                                                                      productModel
+                                                                          .id);
                                                                   cartController
                                                                       .addProductToCart(
-                                                                          product);
+                                                                          productModel);
                                                                 },
                                                                 child: Text(
                                                                     "Add to Cart")),

@@ -28,8 +28,16 @@ class UserController extends GetxController {
     super.onReady();
     firebaseUser = Rx<User>(auth.currentUser);
     firebaseUser.bindStream(auth.userChanges());
-    userData.bindStream(listenToUser());
-    // ever(firebaseUser, setInitialScreen);
+    ever(firebaseUser, _setInitialScreen);
+  }
+
+  _setInitialScreen(User user) {
+    if (user == null) {
+      Get.offAll(() => LoginScreen());
+    } else {
+      userData.bindStream(listenToUser());
+      Get.offAll(() => HomePage());
+    }
   }
 
   get getuser => userData.bindStream(listenToUser());
@@ -45,7 +53,7 @@ class UserController extends GetxController {
         userData.bindStream(listenToUser());
         print("=========================== user sign in =================");
         _clearControllers();
-        Get.offAll(HomePage());
+        // Get.offAll(HomePage());
       });
     } catch (e) {
       dismissLoading();
@@ -97,18 +105,21 @@ class UserController extends GetxController {
       "password": passwordTextEditingController.text.trim(),
       "cart": []
     }).then((_) {
-      userData.bindStream(listenToUser());
-      print("===========================  user uploaded to database =================");
-      Get.offAll(HomePage());
+      // userData.bindStream(listenToUser());
+      print(
+          "===========================  user uploaded to database =================");
+      // Get.offAll(HomePage());
     });
   }
 
   Stream<UserData> listenToUser() {
     print("=========================== Listen to user =================");
+    print(firebaseUser.value.uid);
+    print(firebaseUser.value.email);
     User user = auth.currentUser;
     return FirebaseFirestore.instance
         .collection(usersCollection)
-        .doc(user.uid)
+        .doc(firebaseUser.value.uid)
         .snapshots()
         .map((snapshot) => UserData.fromSnapshot(snapshot));
   }
@@ -131,7 +142,7 @@ class UserController extends GetxController {
   signOut() async {
     try {
       await auth.signOut();
-      Get.offAll(LoginScreen());
+      // Get.offAll(LoginScreen());
       return true;
     } catch (e) {
       return false;
