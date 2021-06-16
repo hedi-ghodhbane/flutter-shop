@@ -1,6 +1,4 @@
-import 'package:aewebshop/auth.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
-import 'package:aewebshop/screens/auth/auth.dart';
 import 'package:aewebshop/screens/preartiki.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,8 +9,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Authentication _auth = new Authentication();
   UserController _userController = Get.find();
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -93,31 +94,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      margin:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                      child: Text(
-                        // _auth.isLogged ? _auth.userEmail : "Login",
-                        _userController.userData.value.email != null
-                            ? _userController.userData.value.email
-                            : "Login",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => LoginScreen()));
                       _userController.signOut();
                     },
                     child: Container(
@@ -131,7 +109,24 @@ class _HomePageState extends State<HomePage> {
                           EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                       child: Text(
                         // _auth.isLogged ? _auth.userEmail : "Login",
-                        "Log out",
+                        "Log Out",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    child: Obx(
+                      () => Text(
+                        // _auth.isLogged ? _auth.userEmail : "Login",
+                        _userController.userData.value.name ?? "",
                         style: TextStyle(
                           color: Colors.black,
                         ),

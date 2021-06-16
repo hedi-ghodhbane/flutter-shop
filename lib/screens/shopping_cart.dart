@@ -32,7 +32,7 @@ class ShoppingCartWidget extends StatelessWidget {
                   children: userController.userData.value.cart
                       .map((cartItem) => CartItemWidget(
                             cartItem: cartItem,
-                          ))
+                          ),)
                       .toList(),
                 )),
           ],

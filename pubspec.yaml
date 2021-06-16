@@ -36,10 +36,11 @@ dependencies:
   firebase_auth: ^1.2.0
   flutter_login: ^1.0.15
   carousel_slider: ^3.0.0
-  get:
+  get: ^4.1.4
   cloud_firestore: ^2.2.2
   modal_bottom_sheet: ^2.0.0
   get_storage:
+  material_design_icons_flutter: 3.4.4995
 
 dev_dependencies:
   build_runner: ^2.0.4

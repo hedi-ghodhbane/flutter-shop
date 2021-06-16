@@ -5,14 +5,12 @@ import 'package:aewebshop/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class CartController extends GetxController {
   static CartController instance = Get.find();
-  UserController userController = Get.find();
   RxDouble totalCartPrice = 0.0.obs;
-  final box = GetStorage();
+  UserController userController = Get.find();
 
   @override
   void onReady() {
@@ -22,7 +20,6 @@ class CartController extends GetxController {
 
   void addProductToCart(ProductModel product) {
     try {
-      print(box.read("uid"));
       if (_isItemAlreadyAdded(product)) {
         Get.snackbar("Check your cart", "${product.name} is already added");
       } else {
@@ -36,9 +33,7 @@ class CartController extends GetxController {
               "quantity": 1,
               "price": product.price,
               "image": product.image,
-              "cost": product.price,
-              "model": product.model,
-              "brand": product.brand
+              "cost": product.price
             }
           ])
         });
@@ -46,7 +41,7 @@ class CartController extends GetxController {
       }
     } catch (e) {
       Get.snackbar("Error", "Cannot add this item");
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -61,10 +56,10 @@ class CartController extends GetxController {
     }
   }
 
-  changeCartTotalPrice(UserData userData) {
+  changeCartTotalPrice(UserData userModel) {
     totalCartPrice.value = 0.0;
-    if (userData.cart.isNotEmpty) {
-      userData.cart.forEach((cartItem) {
+    if (userModel.cart.isNotEmpty) {
+      userModel.cart.forEach((cartItem) {
         totalCartPrice += cartItem.cost;
       });
     }
@@ -90,7 +85,6 @@ class CartController extends GetxController {
   void increaseQuantity(CartItemModel item) {
     removeCartItem(item);
     item.quantity++;
-    // logger.i({"quantity": item.quantity});
     userController.updateUserData({
       "cart": FieldValue.arrayUnion([item.toJson()])
     });

@@ -493,6 +493,36 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             ),
           ),
           SizedBox(height: 30),
+          //  GestureDetector(
+          //    onTap:(){
+          //      ProductModel product = ProductModel(
+          //        brand: "Brandname",
+          //        id: "1112",
+          //        image: "https://www.freeimages.com/istockphoto/file?id=361995295&path=photo/building-a-strong-team-wooden-blocks-with-people-icon-on-pink-background-human-gm1227412970-361995295&function=search&location=right&keyword=link&page=1&sharedid=link&getty=1227412970",
+          //        model: "aeer",
+          //        name: "rvr",
+          //        price: 12,
+          //      );
+          //      cartController .addProductToCart(product);
+          //    },
+          //               child: Container(
+          //                                   height: 150,
+          //                                   child: CachedNetworkImage(
+          //                                     imageUrl: "https://www.freeimages.com/istockphoto/file?id=361995295&path=photo/building-a-strong-team-wooden-blocks-with-people-icon-on-pink-background-human-gm1227412970-361995295&function=search&location=right&keyword=link&page=1&sharedid=link&getty=1227412970",
+          //                                     progressIndicatorBuilder: (context,
+          //                                             url, downloadProgress) =>
+          //                                         SpinKitFadingCircle(
+          //                                       color: Colors.red,
+          //                                       size: 20,
+          //                                     ),
+          //                                     //placeholder: (context, url) => CircularProgressIndicator(),
+          //                                     errorWidget:
+          //                                         (context, url, error) =>
+          //                                             Icon(Icons.error),
+          //                                   ),
+          //                                 ),
+          // ),
+
           Expanded(
             child: //RefreshIndicator ( child:
 
@@ -600,6 +630,8 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                         products[index].get("mo").toString();
                                     String katBr =
                                         products[index].get("kb").toString();
+                                        String id =
+                                        products[index].get("id").toString();
                                     String cijena =
                                         products[index].get("c").toString();
                                     String kolicina =
@@ -811,7 +843,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                                                       ProductModel(
                                                                     brand:
                                                                         marka,
-                                                                    id: katBr,
+                                                                    id: id,
                                                                     name: naziv,
                                                                     price: double
                                                                         .parse(

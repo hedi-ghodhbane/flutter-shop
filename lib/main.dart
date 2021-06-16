@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:aewebshop/controllers/cart_controller.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
+import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:page_transition/page_transition.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -43,15 +44,30 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    navigate();
 
-    Timer(
-        Duration(seconds: 3),
-        () => Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.fade,
-                child: HomePage(),
-                duration: Duration(milliseconds: 900))));
+    // Timer(
+    //     Duration(seconds: 3),
+    //     () => Navigator.push(
+    //         context,
+    //         PageTransition(
+    //             type: PageTransitionType.fade,
+    //             child: HomePage(),
+    //             duration: Duration(milliseconds: 900))));
+  }
+
+  navigate() {
+    User user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Timer(Duration(seconds: 3), () {
+        
+        Get.off(HomePage());
+      });
+    } else {
+      Timer(Duration(seconds: 3), () {
+        Get.off(LoginScreen());
+      });
+    }
   }
 
   @override
