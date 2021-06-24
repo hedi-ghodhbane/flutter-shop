@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aewebshop/controllers/cart_controller.dart';
+import 'package:aewebshop/controllers/order_controller.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
@@ -15,6 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(UserController());
   Get.put(CartController());
+  Get.put(OrderController());
   await GetStorage.init();
 
   await Firebase.initializeApp();
@@ -44,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-   //navigate();
+    //navigate();
 
     // Timer(
     //     Duration(seconds: 3),
@@ -60,7 +62,6 @@ class _SplashScreenState extends State<SplashScreen> {
     User user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       Timer(Duration(seconds: 3), () {
-        
         Get.off(HomePage());
       });
     } else {

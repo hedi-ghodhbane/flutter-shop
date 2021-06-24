@@ -1,6 +1,7 @@
 import 'package:aewebshop/controllers/cart_controller.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/model/product.dart';
+import 'package:aewebshop/screens/orders.dart';
 import 'package:aewebshop/screens/shopping_cart.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -219,7 +220,28 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                       )
                     : Get.snackbar(
                         "Notice!", "Cart is Empty, Add Item to view");
-              })
+              }),
+          IconButton(
+            icon: Icon(Icons.notification_add, color: Colors.black),
+            onPressed: ()=> Get.to(UserOrder()),
+          ),
+               Container(
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    child: Obx(
+                      () => Text(
+                        // _auth.isLogged ? _auth.userEmail : "Login",
+                        userController.userData.value.name ?? "no name",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
         ],
         centerTitle: true,
         elevation: 0.0,
@@ -529,7 +551,10 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                     List.from(products[index].get("u"));
                                 if (array_list != null &&
                                     array_list.length > 0) {
-                                  image_url = array_list[0];
+                                      setState(() {
+                                        image_url = array_list[0];
+                                      });
+                                  
                                 }
                                 return InkWell(
                                   child: Container(
@@ -628,8 +653,11 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                                   appBar: AppBar(
                                                     actions: [
                                                       IconButton(
-                                                          icon: Icon(Icons
-                                                              .shopping_cart),
+                                                          icon: Icon(
+                                                              Icons
+                                                                  .shopping_cart,
+                                                              color:
+                                                                  Colors.black),
                                                           onPressed: () {
                                                             userController
                                                                         .userData
@@ -651,7 +679,38 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                                                                 : Get.snackbar(
                                                                     "Notice!",
                                                                     "Add Item to cart to view");
-                                                          })
+                                                          }),
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.amber,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 15,
+                                                                horizontal: 30),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 15,
+                                                                horizontal: 30),
+                                                        child: Obx(
+                                                          () => Text(
+                                                            // _auth.isLogged ? _auth.userEmail : "Login",
+                                                            userController
+                                                                    .userData
+                                                                    .value
+                                                                    .name ??
+                                                                "",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ],
                                                     leading: IconButton(
                                                       icon: Icon(
