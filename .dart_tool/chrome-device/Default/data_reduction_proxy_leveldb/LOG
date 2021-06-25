@@ -1,7 +1,2 @@
-2021/06/17-03:17:18.518 cbc Recovering log #7
-2021/06/17-03:17:19.371 cbc Delete type=0 #7
-2021/06/17-03:17:19.371 cbc Delete type=0 #5
-2021/06/17-03:17:19.371 cbc Delete type=3 #6
-2021/06/17-03:17:19.371 cbc Delete type=0 #3
-2021/06/17-03:17:19.371 cbc Delete type=3 #2
-2021/06/17-03:17:19.371 cbc Delete type=3 #4
+2021/06/25-20:29:54.878 fdd4 Creating DB /tmp/flutter_tools.PAUEYV/flutter_tools_chrome_device.KPGFFD/Default/data_reduction_proxy_leveldb since it was missing.
+2021/06/25-20:29:54.920 fdd4 Delete type=3 #1
