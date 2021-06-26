@@ -1,0 +1,31 @@
+2021/06/26-15:01:17.638 562b Creating DB /tmp/flutter_tools.QSDIYX/flutter_tools_chrome_device.MJQXOC/Default/IndexedDB/http_localhost_38281.indexeddb.leveldb since it was missing.
+2021/06/26-15:01:17.641 562b Reusing MANIFEST /tmp/flutter_tools.QSDIYX/flutter_tools_chrome_device.MJQXOC/Default/IndexedDB/http_localhost_38281.indexeddb.leveldb/MANIFEST-000001
+2021/06/26-15:01:17.651 562c Level-0 table #5: started
+2021/06/26-15:01:17.653 562c Level-0 table #5: 618 bytes OK
+2021/06/26-15:01:17.656 562c Delete type=0 #3
+2021/06/26-15:01:17.656 562c Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2021/06/26-15:01:34.404 562c Level-0 table #7: started
+2021/06/26-15:01:34.405 562c Level-0 table #7: 3156 bytes OK
+2021/06/26-15:01:34.407 562c Delete type=0 #4
+2021/06/26-15:01:34.407 562c Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2021/06/26-15:12:26.676 5d50 Level-0 table #9: started
+2021/06/26-15:12:26.677 5d50 Level-0 table #9: 2240 bytes OK
+2021/06/26-15:12:26.679 5d50 Delete type=0 #6
+2021/06/26-15:12:26.679 5d50 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at '\x00\x05\x00\x00\x05' @ 201 : 1
+2021/06/26-15:12:26.679 5d50 Compacting 1@0 + 1@1 files
+2021/06/26-15:12:26.681 5d50 Generated table #10@0: 89 keys, 1994 bytes
+2021/06/26-15:12:26.681 5d50 Compacted 1@0 + 1@1 files => 1994 bytes
+2021/06/26-15:12:26.683 5d50 compacted to: files[ 0 1 1 0 0 0 0 ]
+2021/06/26-15:12:26.683 5d50 Delete type=2 #9
+2021/06/26-15:12:26.684 5d4f Manual compaction at level-0 from '\x00\x05\x00\x00\x05' @ 201 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
+2021/06/26-15:19:57.528 61b0 Level-0 table #12: started
+2021/06/26-15:19:57.530 61b0 Level-0 table #12: 2238 bytes OK
+2021/06/26-15:19:57.532 61b0 Delete type=0 #8
+2021/06/26-15:19:57.532 61b0 Delete type=2 #7
+2021/06/26-15:19:57.533 61b0 Manual compaction at level-0 from '\x00\x06\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at '\x00\x06\x00\x00\x05' @ 258 : 1
+2021/06/26-15:19:57.533 61b0 Compacting 1@0 + 1@1 files
+2021/06/26-15:19:57.535 61b0 Generated table #13@0: 105 keys, 2158 bytes
+2021/06/26-15:19:57.535 61b0 Compacted 1@0 + 1@1 files => 2158 bytes
+2021/06/26-15:19:57.536 61b0 compacted to: files[ 0 1 1 0 0 0 0 ]
+2021/06/26-15:19:57.537 61b0 Delete type=2 #12
+2021/06/26-15:19:57.537 61b0 Manual compaction at level-0 from '\x00\x06\x00\x00\x05' @ 258 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at (end)

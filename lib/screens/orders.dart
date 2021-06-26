@@ -1,3 +1,4 @@
+import 'package:aewebshop/constants/sizes.dart';
 import 'package:aewebshop/screens/widget/nav_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,24 +8,35 @@ class UserOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final width = MediaQuery.of(context).size.width;
+    final screenSize = WindowSizes.size(width);
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0.0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Get.back(),
-            ),
-            title: Text("O R D E R S",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )),
-          ),
+          appBar: screenSize == Sizes.Large
+              ? null
+              : AppBar(
+                  backgroundColor: Colors.red[800],
+                  elevation: 0.0,
+                  // leading: IconButton(
+                  //   icon: Icon(Icons.arrow_back, color: Colors.black),
+                  //   onPressed: () => Get.back(),
+                  // ),
+                  centerTitle: true,
+                  title: Text("O R D E R S",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                ),
+          drawer: screenSize == Sizes.Large
+              ? null
+              : NavBar(
+                  size: screenSize,
+                ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+            padding: EdgeInsets.symmetric(
+                horizontal: 10, vertical: screenSize == Sizes.Large ? 100 : 20),
             child: Container(
               height: size.height,
               width: size.width,
@@ -69,13 +81,15 @@ class UserOrder extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          top: 0,
-          right: 0,
-          child: NavBar(
-            color: Colors.grey[300],
+        if (screenSize == Sizes.Large)
+          Positioned(
+            top: 0,
+            right: 0,
+            child: NavBar(
+              roundLoginButton: true,
+              color: Colors.transparent,
+            ),
           ),
-        ),
       ],
     );
   }

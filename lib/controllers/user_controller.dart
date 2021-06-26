@@ -37,7 +37,7 @@ class UserController extends GetxController {
       // Get.offAll(() => HomePage());
     } else {
       userData.bindStream(listenToUser());
-      Get.offAll(() => HomePage());
+      Get.offAll(HomePage());
     }
   }
 
@@ -52,13 +52,14 @@ class UserController extends GetxController {
               password: passwordTextEditingController.text.trim())
           .then((result) {
         userData.bindStream(listenToUser());
-        Get.offAll(HomePage());
+
         print("=========================== user sign in =================");
         _clearControllers();
-        // Get.offAll(HomePage());
+        Get.offAll(HomePage());
       });
     } catch (e) {
       dismissLoading();
+      print(e.toString());
       var error = e.toString().split("]");
       var displayError = error[1];
       Get.snackbar(
@@ -86,11 +87,10 @@ class UserController extends GetxController {
       });
     } catch (e) {
       dismissLoading();
-      var error = e.toString().split("]");
-      var displayError = error[1];
+
       Get.snackbar(
         "Error",
-        displayError,
+        e.toString(),
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.white,
         colorText: Colors.black,
@@ -144,7 +144,7 @@ class UserController extends GetxController {
   signOut() async {
     try {
       await auth.signOut();
-      Get.offAll(LoginScreen());
+      Get.offAll(HomePage());
       // Get.offAll(LoginScreen());
       return true;
     } catch (e) {

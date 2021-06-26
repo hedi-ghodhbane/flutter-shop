@@ -26,6 +26,117 @@ class _PregledArtikalaState extends State<PregledArtikala> {
   var hrana;
   bool isSearchtext = true;
   String searchtext = "";
+  List<String> items = <String>[
+    'ABS sistemi',
+    'Airbagovi',
+    'Akumulatori',
+    'Alnaseri',
+    'Alternatori',
+    'Amortizeri i opruge',
+    'Automobili u dijelvima',
+    'Autokozmetika',
+    'Auto klime',
+    'Branici karambolke i spojleri',
+    'Brave za paljenje i kljucevi',
+    'Blatobrani',
+    'Brisaci',
+    'Bobine',
+    'Bregaste osovine',
+    'CD\/DVD\/MC\/Radio player',
+    'Crijeva',
+    'Cepovi za felge',
+    'Dizne',
+    'Diskovi\/Plocice',
+    'Diferencijali',
+    'Dobosi tocka\/kocioni',
+    'Displej',
+    'Elektronika i Akustika',
+    'Farovi',
+    'Felge s gumama',
+    'Felge',
+    'Filteri',
+    'Gume',
+    'Glavcine',
+    'Glavamotora',
+    'Grijaci',
+    'Hladnjaci',
+    'Haube',
+    'Instrument table',
+    'Izduvni sistemi',
+    'Kilometar satovi',
+    'Kocioni cilindri',
+    'Kompresori',
+    'Kvacila i dijelovi istih',
+    'Kablovi i konektori',
+    'Karteri',
+    'Kineticki zglobovi',
+    'Kardan',
+    'Kozice mjenjaca',
+    'Krajnice',
+    'Karburatori',
+    'Kederi',
+    'Klipovi',
+    'Kuciste osiguraca',
+    'Limarija',
+    'Letve volana',
+    'Lajsne i pragovi',
+    'Lafete',
+    'Lazajevi',
+    'Lamele',
+    'Motori',
+    'Mjenjaci',
+    'Maske',
+    'Maglenke',
+    'Motorici i klapne grijanja',
+    'Nosaci motora\/mjenjaca',
+    'Navigacija\/GPS',
+    'Nosaci i koferi',
+    'Naslonjaci',
+    'Osovine\/Mostovi',
+    'Ostalo',
+    'Prekidaci',
+    'Pumpe',
+    'Podizaci stakala',
+    'Plastika',
+    'Patosnice\/Podmetaci',
+    'Posude za tecnosti',
+    'Papucice',
+    'Protokomjeri zraka',
+    'Pakne',
+    'Pojasevi sigurnosni',
+    'Retrovizori',
+    'Ratkape',
+    'Remenovi',
+    'Rucice mjenjaca',
+    'Releji',
+    'Rezervoari',
+    'Rucice brisaca - zmigavaca - tempomat',
+    'Razni prekidaci',
+    'Radio i oprema',
+    'Sajbe i prozori',
+    'Senzori',
+    'Sijalice',
+    'Sjedista',
+    'Spaneri\/Remenice',
+    'Sajle',
+    'Stabilizatori',
+    'Stopke',
+    'Spulne',
+    'Turbine',
+    'Tuning',
+    'Tapacirung',
+    'Termostati',
+    'Unutrasnji izgled',
+    'Usisne grane',
+    'Vrata',
+    'Ventilatori',
+    'Volani',
+    'Ventili',
+    'Zmigavci',
+    'Znakovi',
+    'Zvucnici',
+    'Zamajci',
+  ];
   List<String> itemlist = [
     'Part Name',
     'Catalogue Number',
@@ -210,19 +321,34 @@ class _PregledArtikalaState extends State<PregledArtikala> {
         children: [
           Scaffold(
             backgroundColor: Colors.white,
-            appBar: buildAppBar(),
+            appBar: size == Sizes.Large ? null : buildAppBar(size),
+            drawer: size == Sizes.Large
+                ? null
+                : NavBar(
+                    size: size,
+                  ),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: 100),
+                // size == Sizes.Large || size == Sizes.Medium
+                // ?
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    buildFirstDropDownList(),
-                    buildSecondsDropDownList(),
+                    Expanded(child: buildFirstDropDownList()),
+                    Expanded(child: buildSecondsDropDownList()),
                   ],
                 ),
+                // : Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       buildFirstDropDownList(),
+                //       buildSecondsDropDownList(),
+                //     ],
+                //   ),
                 SizedBox(height: 10),
                 Center(
                   child: buildSearch(),
@@ -246,28 +372,31 @@ class _PregledArtikalaState extends State<PregledArtikala> {
               ],
             ),
           ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: NavBar(
-              color: Colors.grey[300],
+          if (size == Sizes.Large)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: NavBar(
+                // this is to make login button round on the left when background color is white so it looks more beautiful
+                roundLoginButton: true,
+                color: Colors.white,
+              ),
             ),
-          ),
         ],
       ),
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(Sizes size) {
     return AppBar(
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.white),
       title: Text(
         'Pregled artikala',
-        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
       elevation: 0.0,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.red[800],
     );
   }
 
@@ -338,117 +467,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             //elevation: 5,
             style: TextStyle(color: Colors.white),
             iconEnabledColor: Colors.black,
-            items: <String>[
-              'ABS sistemi',
-              'Airbagovi',
-              'Akumulatori',
-              'Alnaseri',
-              'Alternatori',
-              'Amortizeri i opruge',
-              'Automobili u dijelvima',
-              'Autokozmetika',
-              'Auto klime',
-              'Branici karambolke i spojleri',
-              'Brave za paljenje i kljucevi',
-              'Blatobrani',
-              'Brisaci',
-              'Bobine',
-              'Bregaste osovine',
-              'CD\/DVD\/MC\/Radio player',
-              'Crijeva',
-              'Cepovi za felge',
-              'Dizne',
-              'Diskovi\/Plocice',
-              'Diferencijali',
-              'Dobosi tocka\/kocioni',
-              'Displej',
-              'Elektronika i Akustika',
-              'Farovi',
-              'Felge s gumama',
-              'Felge',
-              'Filteri',
-              'Gume',
-              'Glavcine',
-              'Glavamotora',
-              'Grijaci',
-              'Hladnjaci',
-              'Haube',
-              'Instrument table',
-              'Izduvni sistemi',
-              'Kilometar satovi',
-              'Kocioni cilindri',
-              'Kompresori',
-              'Kvacila i dijelovi istih',
-              'Kablovi i konektori',
-              'Karteri',
-              'Kineticki zglobovi',
-              'Kardan',
-              'Kozice mjenjaca',
-              'Krajnice',
-              'Karburatori',
-              'Kederi',
-              'Klipovi',
-              'Kuciste osiguraca',
-              'Limarija',
-              'Letve volana',
-              'Lajsne i pragovi',
-              'Lafete',
-              'Lazajevi',
-              'Lamele',
-              'Motori',
-              'Mjenjaci',
-              'Maske',
-              'Maglenke',
-              'Motorici i klapne grijanja',
-              'Nosaci motora\/mjenjaca',
-              'Navigacija\/GPS',
-              'Nosaci i koferi',
-              'Naslonjaci',
-              'Osovine\/Mostovi',
-              'Ostalo',
-              'Prekidaci',
-              'Pumpe',
-              'Podizaci stakala',
-              'Plastika',
-              'Patosnice\/Podmetaci',
-              'Posude za tecnosti',
-              'Papucice',
-              'Protokomjeri zraka',
-              'Pakne',
-              'Pojasevi sigurnosni',
-              'Retrovizori',
-              'Ratkape',
-              'Remenovi',
-              'Rucice mjenjaca',
-              'Releji',
-              'Rezervoari',
-              'Rucice brisaca - zmigavaca - tempomat',
-              'Razni prekidaci',
-              'Radio i oprema',
-              'Sajbe i prozori',
-              'Senzori',
-              'Sijalice',
-              'Sjedista',
-              'Spaneri\/Remenice',
-              'Sajle',
-              'Stabilizatori',
-              'Stopke',
-              'Spulne',
-              'Turbine',
-              'Tuning',
-              'Tapacirung',
-              'Termostati',
-              'Unutrasnji izgled',
-              'Usisne grane',
-              'Vrata',
-              'Ventilatori',
-              'Volani',
-              'Ventili',
-              'Zmigavci',
-              'Znakovi',
-              'Zvucnici',
-              'Zamajci',
-            ].map<DropdownMenuItem<String>>((String value) {
+            items: items.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Padding(
@@ -497,13 +516,13 @@ class _PregledArtikalaState extends State<PregledArtikala> {
   Padding buildGrid(BuildContext context, size) {
     return Padding(
       padding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width / 10,
-          right: MediaQuery.of(context).size.width / 10),
+          left: MediaQuery.of(context).size.width / 9,
+          right: MediaQuery.of(context).size.width / 9),
       child: Container(
         width: double.infinity,
         child: GridView.count(
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
             controller: _scrollController,
             crossAxisCount: size == Sizes.Large
                 ? 4
@@ -538,38 +557,42 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                       child: Container(
                         margin: EdgeInsets.all(20),
                         height: size == Sizes.Large
-                            ? 60.0
+                            ? 100.0
                             : size == Sizes.Medium
-                                ? 70
-                                : 80,
+                                ? 80
+                                : 100,
                         color: Color.fromRGBO(255, 0, 0, 0.5),
-                        child: Column(
-                          children: [
-                            Text(
-                              "$title",
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: size == Sizes.Large
-                                    ? 17.0
-                                    : size == Sizes.Medium
-                                        ? 15
-                                        : 20,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Text("$subTitle",
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "$title",
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size == Sizes.Large
-                                        ? 17.0
-                                        : size == Sizes.Medium
-                                            ? 15
-                                            : 20,
-                                    fontWeight: FontWeight.bold)),
-                          ],
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: size == Sizes.Large
+                                      ? 17.0
+                                      : size == Sizes.Medium
+                                          ? 15
+                                          : 20,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text("$subTitle",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: size == Sizes.Large
+                                          ? 17.0
+                                          : size == Sizes.Medium
+                                              ? 15
+                                              : 20,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
