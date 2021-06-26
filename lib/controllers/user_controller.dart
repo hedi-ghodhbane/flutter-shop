@@ -34,7 +34,7 @@ class UserController extends GetxController {
 
   _setInitialScreen(User user) {
     if (user == null) {
-      Get.offAll(() => LoginScreen());
+      // Get.offAll(() => HomePage());
     } else {
       userData.bindStream(listenToUser());
       Get.offAll(() => HomePage());
@@ -52,6 +52,7 @@ class UserController extends GetxController {
               password: passwordTextEditingController.text.trim())
           .then((result) {
         userData.bindStream(listenToUser());
+        Get.offAll(HomePage());
         print("=========================== user sign in =================");
         _clearControllers();
         // Get.offAll(HomePage());
@@ -143,6 +144,7 @@ class UserController extends GetxController {
   signOut() async {
     try {
       await auth.signOut();
+      Get.offAll(LoginScreen());
       // Get.offAll(LoginScreen());
       return true;
     } catch (e) {

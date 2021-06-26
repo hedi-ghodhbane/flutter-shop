@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser;
+    navigate();
     print("user from firebase " + user.toString());
     //navigate();
 
@@ -62,16 +62,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navigate() {
-    User user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      Timer(Duration(seconds: 3), () {
-        Get.off(HomePage());
-      });
-    } else {
-      Timer(Duration(seconds: 3), () {
-        Get.off(LoginScreen());
-      });
-    }
+    // User user = FirebaseAuth.instance.currentUser;
+    // if (user != null) {
+    Timer(Duration(seconds: 3), () {
+      Get.off(HomePage());
+    });
+    // } else {
+    //   Timer(Duration(seconds: 3), () {
+    //     Get.off(LoginScreen());
+    //   });
+    // }
   }
 
   @override
