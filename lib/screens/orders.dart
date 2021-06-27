@@ -127,22 +127,36 @@ class _UserOrderState extends State<UserOrder> {
               shrinkWrap: true,
               itemCount: items?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Image.network(items[index]["image"]),
-                  subtitle: Text(
-                    ("price " + items[index]["price"].toString() ?? "price") +
-                        " x " +
-                        ("quantity " + items[index]["quantity"].toString() ??
-                            "quantity") +
-                        " = " +
-                        ("total cost " + items[index]["cost"].toString() ??
-                            "cost"),
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                  ),
-                  title: Text(items[index]["name"],
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                );
+                return items[index].keys.length == 0
+                    ? Text("no items")
+                    : ListTile(
+                        leading: Image.network(items[index]["image"] ?? ""),
+                        subtitle: Text(
+                          ("price " + items[index]["price"].toString() ??
+                                  "price") +
+                              " x " +
+                              ("quantity " +
+                                      items[index]["quantity"].toString() ??
+                                  "quantity") +
+                              " = " +
+                              ("total cost " +
+                                      items[index]["cost"].toString() ??
+                                  "cost"),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize:
+                                  WindowSizes.size(Get.width) == Sizes.Large
+                                      ? 20
+                                      : 15),
+                        ),
+                        title: Text(items[index]["name"] ?? "",
+                            style: TextStyle(
+                                fontSize:
+                                    WindowSizes.size(Get.width) == Sizes.Large
+                                        ? 25
+                                        : 18,
+                                fontWeight: FontWeight.bold)),
+                      );
               },
             ),
           )

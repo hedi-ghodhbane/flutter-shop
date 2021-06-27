@@ -56,6 +56,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "bot_toast",
+      "rootUri": "file:///home/hedighodhbane/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/bot_toast-4.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "build",
       "rootUri": "file:///home/hedighodhbane/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/build-2.0.2",
       "packageUri": "lib/",
@@ -740,7 +746,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-06-24T19:35:42.781446Z",
+  "generated": "2021-06-27T13:24:16.536137Z",
   "generator": "pub",
   "generatorVersion": "2.13.1"
 }

@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
-/// show loading dialog box to user 
-showLoading() => Get.defaultDialog(
-      title: "Loading...",
-      content: Center(child: CircularProgressIndicator()),
-    );
+
+/// show loading dialog box to user
+showLoading() => BotToast.showLoading();
+
 /// remove the loading dialog
-dismissLoading() {
-  Get.back();
-}
+dismissLoading() => BotToast.closeAllLoading();

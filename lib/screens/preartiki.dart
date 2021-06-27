@@ -5,6 +5,7 @@ import 'package:aewebshop/model/product.dart';
 import 'package:aewebshop/screens/orders.dart';
 import 'package:aewebshop/screens/shopping_cart.dart';
 import 'package:aewebshop/screens/widget/nav_bar.dart';
+import 'package:aewebshop/widgets/custom_btn.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -711,7 +712,10 @@ class _PregledArtikalaState extends State<PregledArtikala> {
           borderRadius: BorderRadius.all(Radius.circular(6))),
       margin: EdgeInsets.only(left: 10, right: 10),
       child: ListTile(
-        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
+        contentPadding: EdgeInsets.only(
+            left: 10.0,
+            right: 10.0,
+            bottom: WindowSizes.size(Get.width) == Sizes.Large ? 18.0 : 14),
         //contentPadding: EdgeInsets.symmetric(vertical: 0.0,horizontal: 0.0),
         dense: true,
         horizontalTitleGap: -5.0,
@@ -754,11 +758,12 @@ class _PregledArtikalaState extends State<PregledArtikala> {
   }
 }
 
-class DetailWidget extends StatelessWidget {
+class DetailWidget extends StatefulWidget {
   const DetailWidget({
     Key key,
     @required this.userController,
     @required this.arrayList,
+    @required this.price,
     @required this.naziv,
     @required this.marka,
     @required this.model,
@@ -777,6 +782,7 @@ class DetailWidget extends StatelessWidget {
   final String marka;
   final String model;
   final String katBr;
+  final String price;
   final String cijena;
   final String kolicina;
   final String lokacija;
@@ -785,132 +791,355 @@ class DetailWidget extends StatelessWidget {
   final CartController cartController;
 
   @override
+  _DetailWidgetState createState() => _DetailWidgetState();
+}
+
+class _DetailWidgetState extends State<DetailWidget> {
+  var i = 0;
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final screenSize = WindowSizes.size(width);
     return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: screenSize == Sizes.Large
-          ? null
-          : NavBar(
-              size: screenSize,
-            ),
-      appBar: screenSize == Sizes.Large
-          ? null
-          : AppBar(
-              title: Text(
-                'Detaljnije o artiklu',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        backgroundColor: Colors.white,
+        drawer: screenSize == Sizes.Large
+            ? null
+            : NavBar(
+                size: screenSize,
               ),
-              centerTitle: true,
-              elevation: 0.0,
-              backgroundColor:
-                  screenSize == Sizes.Large ? Colors.white : Colors.red[800],
-            ),
-      body: Stack(
-        children: [
-          Container(
-            child: Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        height: 400,
-                        aspectRatio: 4 / 3,
-                        enableInfiniteScroll: false,
+        appBar: screenSize == Sizes.Large
+            ? null
+            : AppBar(
+                title: Text(
+                  'Detaljnije o artiklu',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                centerTitle: true,
+                elevation: 0.0,
+                backgroundColor:
+                    screenSize == Sizes.Large ? Colors.white : Colors.red[800],
+              ),
+        body: Stack(
+          children: [
+            Container(
+                height: MediaQuery.of(context).size.height - 100,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: screenSize == Sizes.Large
+                            ? 100
+                            : screenSize == Sizes.Medium
+                                ? 50
+                                : 10,
                       ),
-                      items: arrayList
-                          .map((item) => Container(
+                      Flex(
+                        direction: screenSize == Sizes.Large
+                            ? Axis.horizontal
+                            : Axis.vertical,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
                                 child: Center(
-                                    child: Image.network(item,
-                                        fit: BoxFit.cover, width: 600)),
-                              ))
-                          .toList(),
-                    ),
-                    SizedBox(height: 20.0),
-                    Text(
-                      "Naziv artikla : $naziv",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Marka : $marka",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Model : $model",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Kataloski broj : $katBr",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      cijena == "1"
-                          ? "Cijena : Po dogovoru"
-                          : "Cijena : $cijena KM",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Kolicina : $kolicina",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Lokacija : $lokacija",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Opis : $opis",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          print(productModel.id);
-                          cartController.addProductToCart(productModel);
-                        },
-                        child: Text("Add to Cart")),
-                  ],
+                                    child: Image.network(widget.arrayList[i],
+                                        fit: BoxFit.cover, width: 500)),
+                              ),
+                              Container(
+                                width: 500,
+                                height: 100,
+                                child: CarouselSlider(
+                                  options: CarouselOptions(
+                                    scrollDirection: Axis.horizontal,
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 0.2,
+                                  ),
+                                  items: widget.arrayList
+                                      .map((item) => Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  i = widget.arrayList
+                                                      .indexOf(item);
+                                                });
+                                              },
+                                              child: Container(
+                                                child: Opacity(
+                                                  opacity: i ==
+                                                          widget.arrayList
+                                                              .indexOf(item)
+                                                      ? 0.5
+                                                      : 1,
+                                                  child: Center(
+                                                      child: Image.network(item,
+                                                          fit: BoxFit.cover,
+                                                          width: 100)),
+                                                ),
+                                              ),
+                                            ),
+                                          ))
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20.0),
+                                  Text(
+                                    "${widget.naziv}",
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 50),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Marka : ",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " ${widget.marka}",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Model : ",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                            fontSize: screenSize == Sizes.Large
+                                                ? 18.0
+                                                : 14,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "${widget.model}",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Kataloski broj : ",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                            fontSize: screenSize == Sizes.Large
+                                                ? 18.0
+                                                : 14,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "${widget.katBr}",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Cijena : ",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                            fontSize: screenSize == Sizes.Large
+                                                ? 18.0
+                                                : 14,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        widget.cijena == "1"
+                                            ? "Po dogovoru"
+                                            : "${widget.cijena} KM",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Kolicina : ",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                            fontSize: screenSize == Sizes.Large
+                                                ? 18.0
+                                                : 14,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "${widget.kolicina}",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Lokacija :",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                            fontSize: screenSize == Sizes.Large
+                                                ? 18.0
+                                                : 14,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "${widget.lokacija}",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Opis : ",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                            fontSize: screenSize == Sizes.Large
+                                                ? 18.0
+                                                : 14,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "${widget.opis}",
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: screenSize == Sizes.Large
+                                              ? 18.0
+                                              : 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20.0),
+                                ],
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 2,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Cijena : ",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: screenSize == Sizes.Large
+                                            ? 18.0
+                                            : 14,
+                                        color: Colors.grey),
+                                  ),
+                                  Text(
+                                    widget.cijena == "1"
+                                        ? "Po dogovoru"
+                                        : "${widget.cijena} KM",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize:
+                                          screenSize == Sizes.Large ? 18.0 : 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 30.0),
+                              Center(
+                                child: CustomButton(
+                                    bgColor: Colors.blue[300],
+                                    onTap: () {
+                                      print(widget.productModel.id);
+                                      widget.cartController.addProductToCart(
+                                          widget.productModel);
+                                    },
+                                    text: ("Add to Cart")),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
+            if (screenSize == Sizes.Large)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: NavBar(
+                  // this is to make login button round on the left when background color is white so it looks more beautiful
+                  roundLoginButton: true,
+                  color: Colors.white,
                 ),
               ),
-            ),
-          ),
-          if (screenSize == Sizes.Large)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: NavBar(
-                // this is to make login button round on the left when background color is white so it looks more beautiful
-                roundLoginButton: true,
-                color: Colors.white,
-              ),
-            ),
-        ],
-      ),
-    );
+          ],
+        ));
   }
 }

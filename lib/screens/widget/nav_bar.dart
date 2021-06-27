@@ -64,9 +64,13 @@ class NavBar extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                    "Welcome " + (_userController?.userData?.value?.name ?? ""),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                Obx(
+                  () => Text(
+                      "Welcome " +
+                          (_userController?.userData?.value?.name ?? ""),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                )
               ],
             )),
             Container(
@@ -118,8 +122,10 @@ class NavBar extends StatelessWidget {
   Widget forLargeScreen(ButtonStyle buttonStyle, context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
-      child: buildButtonBar(buttonStyle, context,
-          userName: _userController.userData.value.name),
+      child: buildButtonBar(
+        buttonStyle,
+        context,
+      ),
     );
   }
 
@@ -132,7 +138,7 @@ class NavBar extends StatelessWidget {
       layoutBehavior: ButtonBarLayoutBehavior.padded,
       alignment: MainAxisAlignment.center,
       children: [
-        if (userName != null) showUserButton(buttonStyle, userName: userName),
+        showUserButton(buttonStyle, userName: userName),
         homeButton(buttonStyle),
         shopButtons(buttonStyle),
         myCartButton(buttonStyle, context),
@@ -142,21 +148,27 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  TextButton showUserButton(ButtonStyle buttonStyle, {String userName}) {
-    return TextButton.icon(
-      style: buttonStyle.copyWith(
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topLeft: Radius.circular(10)))),
-      ),
-      icon: Icon(Icons.person_outline),
-      onPressed: null,
-      label: Text(
-        userName ?? "",
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
-      ),
+  Widget showUserButton(ButtonStyle buttonStyle, {String userName}) {
+    return Obx(
+      () => _userController?.userData?.value?.name == null
+          ? SizedBox()
+          : TextButton.icon(
+              style: buttonStyle.copyWith(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        topLeft: Radius.circular(10)))),
+              ),
+              icon: Icon(Icons.person_outline),
+              onPressed: null,
+              label: Text(
+                _userController?.userData?.value?.name ?? "",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black),
+              ),
+            ),
     );
   }
 
@@ -164,15 +176,20 @@ class NavBar extends StatelessWidget {
     return TextButton.icon(
       style: buttonStyle,
       onPressed: () {
-        _userController.userData.value.cart != null
-            ? showBarModalBottomSheet(
-                context: context,
-                builder: (context) => Container(
-                  color: Colors.white,
-                  child: ShoppingCartWidget(),
-                ),
-              )
-            : Get.snackbar("Notice!", "Add Item to cart to view");
+        if (_userController?.userData?.value?.cart != null) {
+          if ((_userController?.userData?.value?.cart?.length ?? 0) > 0) {
+            showBarModalBottomSheet(
+              context: context,
+              builder: (context) => Container(
+                color: Colors.white,
+                child: ShoppingCartWidget(),
+              ),
+            );
+          } else {
+            Get.snackbar("Notice!", "You did not add any item to cart");
+          }
+        } else
+          Get.snackbar("Notice!", "Add Item to cart to view");
       },
       icon: Icon(
         Icons.shopping_cart_outlined,
@@ -182,24 +199,27 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  TextButton homeButton(ButtonStyle buttonStyle) {
-    return TextButton.icon(
-      style: buttonStyle.copyWith(
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(
-                    _userController.userData.value.name == null ? 10 : 0),
-                bottomLeft: Radius.circular(
-                    _userController.userData.value.name == null ? 10 : 0)))),
+  Obx homeButton(ButtonStyle buttonStyle) {
+    return Obx(
+      () => TextButton.icon(
+        style: buttonStyle.copyWith(
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                      _userController.userData.value.name == null ? 10 : 0),
+                  bottomLeft: Radius.circular(
+                      _userController.userData.value.name == null ? 10 : 0)))),
+        ),
+        onPressed: () {
+          Get.to(HomePage());
+        },
+        icon: Icon(
+          Icons.home_outlined,
+          color: Colors.black,
+        ),
+        label:
+            Text("Home", style: TextStyle(fontSize: 20, color: Colors.black)),
       ),
-      onPressed: () {
-        Get.to(HomePage());
-      },
-      icon: Icon(
-        Icons.home_outlined,
-        color: Colors.black,
-      ),
-      label: Text("Home", style: TextStyle(fontSize: 20, color: Colors.black)),
     );
   }
 
@@ -233,41 +253,42 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  TextButton logoutButton(ButtonStyle buttonStyle, {bool radius = true}) {
-    return TextButton.icon(
-      style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(radius ? 10 : 0),
-                  bottomLeft: Radius.circular(roundLoginButton ? 10 : 0),
-                  topLeft: Radius.circular(roundLoginButton ? 10 : 0),
-                  topRight: Radius.circular(radius ? 10 : 0)))),
-          backgroundColor: MaterialStateProperty.resolveWith((states) =>
-              _userController.userData.value.name != null
-                  ? Colors.red[800]
-                  : Colors.amber[600]),
-          textStyle: MaterialStateProperty.resolveWith(
-              (states) => TextStyle(fontSize: 20, color: Colors.white))),
-      onPressed: () {
-        if (_userController.userData.value.name != null) {
-          _userController.signOut();
-        } else {
-          Get.defaultDialog(
-              titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              title: "Authentification",
-              content: AuthWrapper(),
-              barrierDismissible: true);
-        }
-      },
-      icon: Icon(
-        _userController.userData.value.name != null
-            ? mIcons.MdiIcons.exitToApp
-            : mIcons.MdiIcons.login,
-        color: Colors.white,
-      ),
-      label: Text(
-          _userController.userData.value.name != null ? "Logout" : "Login",
-          style: TextStyle(fontSize: 20, color: Colors.white)),
-    );
+  Obx logoutButton(ButtonStyle buttonStyle, {bool radius = true}) {
+    return Obx(() => TextButton.icon(
+          style: buttonStyle.copyWith(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(radius ? 10 : 0),
+                      bottomLeft: Radius.circular(roundLoginButton ? 10 : 0),
+                      topLeft: Radius.circular(roundLoginButton ? 10 : 0),
+                      topRight: Radius.circular(radius ? 10 : 0)))),
+              backgroundColor: MaterialStateProperty.resolveWith((states) =>
+                  _userController.userData.value.name != null
+                      ? Colors.red[800]
+                      : Colors.amber[600]),
+              textStyle: MaterialStateProperty.resolveWith(
+                  (states) => TextStyle(fontSize: 20, color: Colors.white))),
+          onPressed: () {
+            if (_userController.userData.value.name != null) {
+              _userController.signOut();
+            } else {
+              Get.defaultDialog(
+                  titleStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  title: "Authentification",
+                  content: AuthWrapper(),
+                  barrierDismissible: true);
+            }
+          },
+          icon: Icon(
+            _userController.userData.value.name != null
+                ? mIcons.MdiIcons.exitToApp
+                : mIcons.MdiIcons.login,
+            color: Colors.white,
+          ),
+          label: Text(
+              _userController.userData.value.name != null ? "Logout" : "Login",
+              style: TextStyle(fontSize: 20, color: Colors.white)),
+        ));
   }
 }

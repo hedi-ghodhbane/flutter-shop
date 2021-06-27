@@ -16,6 +16,7 @@ class LoginContainer extends StatefulWidget {
 
 class _LoginContainerState extends State<LoginContainer> {
   UserController _userController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

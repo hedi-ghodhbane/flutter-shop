@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aewebshop/constants/sizes.dart';
 import 'package:aewebshop/controllers/cart_controller.dart';
 import 'package:aewebshop/controllers/order_controller.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
@@ -15,91 +16,267 @@ class ShoppingCartWidget extends StatelessWidget {
   final CartController cartController = Get.find();
   final UserController userController = Get.find();
   final OrderController orderController = Get.find();
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final screenSize = WindowSizes.size(width);
     return Stack(
       children: [
         ListView(
           children: [
-            SizedBox(
-              height: 10,
-            ),
             Center(
-              child: CustomText(
-                text: "Shopping Cart",
-                size: 24,
-                weight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(28.0),
+                child: CustomText(
+                  size: screenSize == Sizes.Large ? 20 : 12,
+                  text: "Shopping Cart",
+                  weight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(
               height: 5,
             ),
-            Obx(() => Column(
-                  children: userController.userData.value.cart
-                      .map(
-                        (cartItem) => CartItemWidget(
-                          cartItem: cartItem,
-                        ),
-                      )
-                      .toList(),
-                )),
-          ],
-        ),
-        Positioned(
-          bottom: 30,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(8),
-            child: Obx(
-              () => CustomButton(
-                  text:
-                      "Order (\$${cartController.totalCartPrice.value.toStringAsFixed(2)})",
-                  onTap: () {
-                    // convert each item to a string by using JSON encoding
-                    final jsonList = orderController.orders
-                        .map((item) => jsonEncode(item))
-                        .toList();
-
-                    // using toSet - toList strategy
-                    final uniqueJsonList = jsonList.toSet().toList();
-
-                    // convert each item back to the original form using JSON decoding
-                   final myOrders =
-                        uniqueJsonList.map((item) => jsonDecode(item)).toList();
-                    print(myOrders);
-
-                     orderController.createOrder(
-                      itemInfo: myOrders,
-                      orderPrice: cartController.totalCartPrice.value
-                          .toStringAsFixed(2),
-                    );
-
-                    //paymentsController.createPaymentMethod();
-                  }),
-            ),
-          ),
-        ),
-        Positioned(
-          top: 30,
-          left: 30,
-          child: Container(
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                color: Colors.white70,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 4,
-                    spreadRadius: 0,
-                    offset: Offset(4, 8),
-                    color: Colors.grey[200],
+            Container(
+              child: Flex(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                direction:
+                    screenSize == Sizes.Large ? Axis.horizontal : Axis.vertical,
+                children: [
+                  Obx(
+                    () => DataTable(
+                      sortAscending: false,
+                      columnSpacing: screenSize == Sizes.Large ? 30 : 5,
+                      columns: [
+                        DataColumn(
+                            label: Center(
+                          child: Text("Prouct",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontSize:
+                                      screenSize == Sizes.Large ? 20 : 10)),
+                        )),
+                        DataColumn(
+                            label: Center(
+                          child: Text("UP",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontSize:
+                                      screenSize == Sizes.Large ? 20 : 10)),
+                        )),
+                        DataColumn(
+                            label: Center(
+                          child: Text("Quantity",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontSize:
+                                      screenSize == Sizes.Large ? 20 : 10)),
+                        )),
+                        DataColumn(
+                            label: Center(
+                          child: Text("FP",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontSize:
+                                      screenSize == Sizes.Large ? 20 : 10)),
+                        )),
+                        DataColumn(
+                            label: Center(
+                          child: Text("Remove",
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontSize:
+                                      screenSize == Sizes.Large ? 20 : 10)),
+                        )),
+                      ],
+                      rows: userController.userData.value.cart
+                          .map(
+                            (cartItem) => DataRow(cells: <DataCell>[
+                              DataCell(Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Image.network(
+                                        cartItem?.image ?? "",
+                                        width: screenSize == Sizes.Large
+                                            ? 100
+                                            : 20,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: screenSize == Sizes.Large
+                                                ? 14
+                                                : 0),
+                                        child: CustomText(
+                                          size: screenSize == Sizes.Large
+                                              ? 20
+                                              : 10,
+                                          text: cartItem.name,
+                                        )),
+                                  ),
+                                ],
+                              )),
+                              DataCell(
+                                Container(
+                                    padding: EdgeInsets.only(
+                                        left:
+                                            screenSize == Sizes.Large ? 14 : 0),
+                                    child: CustomText(
+                                      size: screenSize == Sizes.Large ? 20 : 12,
+                                      text: cartItem.price.toString(),
+                                    )),
+                              ),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                        icon: Icon(Icons.chevron_left,
+                                            size: screenSize == Sizes.Large
+                                                ? 20
+                                                : 10),
+                                        onPressed: () {
+                                          cartController
+                                              .decreaseQuantity(cartItem);
+                                        }),
+                                    Padding(
+                                      padding: EdgeInsets.all(
+                                          screenSize == Sizes.Large ? 8.0 : 0),
+                                      child: CustomText(
+                                        size:
+                                            screenSize == Sizes.Large ? 20 : 6,
+                                        text: cartItem.quantity.toString(),
+                                      ),
+                                    ),
+                                    IconButton(
+                                        icon: Icon(
+                                          Icons.chevron_right,
+                                          size: screenSize == Sizes.Large
+                                              ? 20
+                                              : 10,
+                                        ),
+                                        onPressed: () {
+                                          cartController
+                                              .increaseQuantity(cartItem);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                              DataCell(
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      screenSize == Sizes.Large ? 14 : 0),
+                                  child: CustomText(
+                                    size: screenSize == Sizes.Large ? 20 : 12,
+                                    text: "\$${cartItem.cost}",
+                                    weight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.remove,
+                                      color: Colors.red,
+                                      size: screenSize == Sizes.Large ? 20 : 10,
+                                    ),
+                                    onPressed: () {
+                                      cartController.removeCartItem(cartItem);
+                                    }),
+                              ),
+                            ]),
+                          )
+                          .toList(),
+                    ),
                   ),
-                ]),
-            child: IconButton(
-              onPressed: () => Get.back(),
-              icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                  SizedBox(
+                    height: screenSize == Sizes.Large ? Get.height * 0.3 : 0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        height: screenSize == Sizes.Large ? 500 : 200,
+                        width: screenSize == Sizes.Large ? 300 : Get.width,
+                        color: Colors.grey.withOpacity(0.9),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomText(
+                              size: screenSize == Sizes.Large ? 20 : 12,
+                              text: "Summary",
+                              weight: FontWeight.bold,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomText(
+                                  size: screenSize == Sizes.Large ? 20 : 12,
+                                  text: "Total Price",
+                                ),
+                                Obx(
+                                  () => CustomText(
+                                    size: screenSize == Sizes.Large ? 20 : 12,
+                                    text:
+                                        " (\$${cartController.totalCartPrice.value.toStringAsFixed(2)})",
+                                    weight: FontWeight.bold,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.all(8.0),
+                                child: Obx(
+                                  () => CustomButton(
+                                      text:
+                                          "Order (\$${cartController?.totalCartPrice?.value?.toStringAsFixed(2) ?? ""})",
+                                      onTap: () {
+                                        // convert each item to a string by using JSON encoding
+                                        final jsonList = userController
+                                            .userData.value.cart
+                                            .map((item) => jsonEncode(item))
+                                            .toList();
+
+                                        // using toSet - toList strategy
+                                        final uniqueJsonList =
+                                            jsonList.toSet().toList();
+
+                                        // convert each item back to the original form using JSON decoding
+                                        final myOrders = uniqueJsonList
+                                            .map((item) => jsonDecode(item))
+                                            .toList();
+                                        print(myOrders);
+
+                                        orderController.createOrder(
+                                          itemInfo: myOrders,
+                                          orderPrice: cartController
+                                              .totalCartPrice.value
+                                              .toStringAsFixed(2),
+                                        );
+
+                                        //paymentsController.createPaymentMethod();
+                                      }),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ],
     );

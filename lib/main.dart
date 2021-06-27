@@ -5,6 +5,7 @@ import 'package:aewebshop/controllers/order_controller.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: ("Montserrat")),
       home: SplashScreen(),

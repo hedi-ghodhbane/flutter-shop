@@ -1,0 +1,1 @@
+ build/web/manifest.json build/web/favicon.png build/web/index.html build/web/icons/Icon-512.png build/web/icons/Icon-192.png:  /home/hedighodhbane/aewebshop/web/manifest.json /home/hedighodhbane/aewebshop/web/favicon.png /home/hedighodhbane/aewebshop/web/index.html /home/hedighodhbane/aewebshop/web/icons/Icon-512.png /home/hedighodhbane/aewebshop/web/icons/Icon-192.png

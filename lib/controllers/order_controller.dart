@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 
 class OrderController extends GetxController {
   UserController _userController = Get.find();
+
   CollectionReference _firebaseFirestore =
-      FirebaseFirestore.instance.collection("orders");
+      FirebaseFirestore.instance.collection("users");
   RxList<Map<dynamic, dynamic>> orders = [{}].obs;
   createOrder({String orderPrice, var itemInfo}) {
+    print(itemInfo);
     showLoading();
     // creating order
     FirebaseFirestore.instance.collection("orders").add({
@@ -21,6 +23,8 @@ class OrderController extends GetxController {
     }).then((value) {
       _firebaseFirestore.doc(_userController.userData.value.id).update({
         "cart": [],
+      }).catchError((err) {
+        print(err + " error from get orders");
       });
       dismissLoading();
       // _userController.userData.value.cart = null;

@@ -3,6 +3,7 @@ import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
 import 'package:aewebshop/screens/widget/auth_wrapper.dart';
 import 'package:aewebshop/utilities/loading.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,6 +50,7 @@ class UserController extends GetxController {
 
   emailAndPasswordSignIn() async {
     showLoading();
+    BotToast.showLoading();
     try {
       await auth
           .signInWithEmailAndPassword(
@@ -59,7 +61,7 @@ class UserController extends GetxController {
         print("=========================== user sign in =================");
         _clearControllers();
         dismissLoading();
-        Get.close(1);
+        Get.back();
         // Get.offAll(HomePage());
       });
     } catch (e) {
@@ -88,6 +90,8 @@ class UserController extends GetxController {
         String _userId = result.user.uid;
         _addUserToFirestore(_userId);
         _clearControllers();
+        Get.back();
+        dismissLoading();
       });
     } catch (e) {
       dismissLoading();
@@ -162,17 +166,20 @@ class UserController extends GetxController {
               ))),
           confirm: TextButton(
               onPressed: () {
-                return Get.back(result: true);
+                Get.back(result: true);
               },
               child: Text("Confirm")),
           cancel: TextButton(
               onPressed: () {
-                return Get.back(result: false);
+                Get.back(result: false);
               },
               child: Text("Cancel")));
       if ((confirm ?? false) == false) return;
-      await auth.signOut();
-      Get.offAll(HomePage());
+      await auth.signOut().then((value) {
+        userData.value.name = null;
+        Get.offAll(HomePage());
+      });
+
       return true;
     } catch (e) {
       return false;
