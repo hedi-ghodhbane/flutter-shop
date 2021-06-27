@@ -13,6 +13,7 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: TextAlign.center,
       overflow: TextOverflow.clip,
       style: TextStyle(
           fontSize: size ?? 16,

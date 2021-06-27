@@ -59,9 +59,9 @@ class UserController extends GetxController {
           .then((result) {
         userData.bindStream(listenToUser());
         print("=========================== user sign in =================");
-        _clearControllers();
+        clearControllers();
         dismissLoading();
-        Get.back();
+        BotToast.cleanAll();
         // Get.offAll(HomePage());
       });
     } catch (e) {
@@ -89,9 +89,10 @@ class UserController extends GetxController {
           .then((result) {
         String _userId = result.user.uid;
         _addUserToFirestore(_userId);
-        _clearControllers();
-        Get.back();
+        clearControllers();
+
         dismissLoading();
+        BotToast.cleanAll();
       });
     } catch (e) {
       dismissLoading();
@@ -144,7 +145,7 @@ class UserController extends GetxController {
         .update(data);
   }
 
-  _clearControllers() {
+  clearControllers() {
     emailTextEditingController.clear();
     passwordTextEditingController.clear();
     fullnameTextEditingController.clear();

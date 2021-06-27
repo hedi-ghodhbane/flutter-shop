@@ -23,11 +23,15 @@ class CartController extends GetxController {
   void addProductToCart(ProductModel product) {
     try {
       if (userController?.userData?.value?.name == null) {
-        Get.defaultDialog(
-            titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            title: "Authentification",
-            content: AuthWrapper(),
-            barrierDismissible: true);
+        // Get.defaultDialog(
+        //     titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        //     title: "Authentification",
+        //     content: AuthWrapper(),
+        //     barrierDismissible: true);
+        BotToast.showWidget(
+            toastBuilder: (_) => Center(
+                  child: AuthWrapper(),
+                ));
         return;
       }
       if (_isItemAlreadyAdded(product)) {

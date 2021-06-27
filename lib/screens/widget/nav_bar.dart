@@ -3,6 +3,7 @@ import 'package:aewebshop/screens/homepage.dart';
 import 'package:aewebshop/screens/preartiki.dart';
 import 'package:aewebshop/screens/widget/auth_wrapper.dart';
 import 'package:aewebshop/screens/widget/login_container.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart'
@@ -272,12 +273,10 @@ class NavBar extends StatelessWidget {
             if (_userController.userData.value.name != null) {
               _userController.signOut();
             } else {
-              Get.defaultDialog(
-                  titleStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  title: "Authentification",
-                  content: AuthWrapper(),
-                  barrierDismissible: true);
+              BotToast.showWidget(
+                  toastBuilder: (_) => Center(
+                        child: AuthWrapper(),
+                      ));
             }
           },
           icon: Icon(

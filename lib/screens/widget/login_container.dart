@@ -23,13 +23,12 @@ class _LoginContainerState extends State<LoginContainer> {
     final size = WindowSizes.size(width);
     return Container(
       width: Get.width * 0.5,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: size == Sizes.Large ? 100.0 : 20),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: size == Sizes.Large ? 100.0 : 20),
+            TextFormField(
               controller: _userController.emailTextEditingController,
               obscureText: false,
               keyboardType: TextInputType.emailAddress,
@@ -49,13 +48,10 @@ class _LoginContainerState extends State<LoginContainer> {
                 fillColor: Colors.white.withOpacity(0.2),
               ),
             ),
-          ),
-          SizedBox(
-            height: 15.0,
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(
+            SizedBox(
+              height: 15.0,
+            ),
+            TextFormField(
               controller: _userController.passwordTextEditingController,
               obscureText: true,
               keyboardType: TextInputType.text,
@@ -75,18 +71,15 @@ class _LoginContainerState extends State<LoginContainer> {
                 fillColor: Colors.white.withOpacity(0.2),
               ),
             ),
-          ),
-          SizedBox(
-            height: 15.0,
-          ),
-          // Text(
-          //   'I forgot my password?',
-          //   style: TextStyle(color: Colors.yellow[800], fontSize: 16.0),
-          // ),
+            SizedBox(
+              height: 15.0,
+            ),
+            // Text(
+            //   'I forgot my password?',
+            //   style: TextStyle(color: Colors.yellow[800], fontSize: 16.0),
+            // ),
 
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Container(
+            Container(
               width: double.infinity,
               height: 45.0,
               // ignore: deprecated_member_use
@@ -101,8 +94,8 @@ class _LoginContainerState extends State<LoginContainer> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

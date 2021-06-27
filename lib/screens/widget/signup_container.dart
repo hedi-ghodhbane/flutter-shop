@@ -21,93 +21,98 @@ class _SignupContainerState extends State<SignupContainer> {
     final size = WindowSizes.size(width);
     return Container(
       width: Get.width * 0.5,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextFormField(
-            controller: _userController.fullnameTextEditingController,
-            keyboardType: TextInputType.text,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              hintText: 'Fullname',
-              labelText: 'Fullname',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red[800], width: 0.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red, width: 0.5),
-              ),
-              hintStyle: TextStyle(color: Colors.black),
-              labelStyle: TextStyle(color: Colors.black),
-              filled: true,
-              fillColor: Colors.white.withOpacity(0.2),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 20,
             ),
-          ),
-          SizedBox(
-            height: 15.0,
-          ),
-          TextFormField(
-            controller: _userController.emailTextEditingController,
-            obscureText: false,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              hintText: 'Email',
-              labelText: 'Email',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red[800], width: 0.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red, width: 0.5),
-              ),
-              hintStyle: TextStyle(color: Colors.black),
-              labelStyle: TextStyle(color: Colors.black),
-              filled: true,
-              fillColor: Colors.white.withOpacity(0.2),
-            ),
-          ),
-          SizedBox(
-            height: 15.0,
-          ),
-          TextFormField(
-            controller: _userController.passwordTextEditingController,
-            obscureText: true,
-            keyboardType: TextInputType.text,
-            style: TextStyle(color: Colors.red[800]),
-            decoration: InputDecoration(
-              hintText: 'Password',
-              labelText: 'Password',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red[800], width: 0.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red[800], width: 0.5),
-              ),
-              hintStyle: TextStyle(color: Colors.red[800]),
-              labelStyle: TextStyle(color: Colors.red[800]),
-              filled: true,
-              fillColor: Colors.white.withOpacity(0.2),
-            ),
-          ),
-          SizedBox(
-            height: 15.0,
-          ),
-          Container(
-            width: double.infinity,
-            height: 45.0,
-            // ignore: deprecated_member_use
-            child: FlatButton(
-              onPressed: () {
-                _userController.signUp();
-              },
-              color: Colors.red[800],
-              child: Text(
-                'Sign Up',
-                style: TextStyle(color: Colors.white, fontSize: 16.0),
+            TextFormField(
+              controller: _userController.fullnameTextEditingController,
+              keyboardType: TextInputType.text,
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                hintText: 'Fullname',
+                labelText: 'Fullname',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 0.5),
+                ),
+                hintStyle: TextStyle(color: Colors.black),
+                labelStyle: TextStyle(color: Colors.black),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.2),
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 15.0,
+            ),
+            TextFormField(
+              controller: _userController.emailTextEditingController,
+              obscureText: false,
+              keyboardType: TextInputType.emailAddress,
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                hintText: 'Email',
+                labelText: 'Email',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 0.5),
+                ),
+                hintStyle: TextStyle(color: Colors.black),
+                labelStyle: TextStyle(color: Colors.black),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            TextFormField(
+              controller: _userController.passwordTextEditingController,
+              obscureText: true,
+              keyboardType: TextInputType.text,
+              style: TextStyle(color: Colors.red[800]),
+              decoration: InputDecoration(
+                hintText: 'Password',
+                labelText: 'Password',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                ),
+                hintStyle: TextStyle(color: Colors.red[800]),
+                labelStyle: TextStyle(color: Colors.red[800]),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            Container(
+              width: double.infinity,
+              height: 45.0,
+              // ignore: deprecated_member_use
+              child: FlatButton(
+                onPressed: () {
+                  _userController.signUp();
+                },
+                color: Colors.red[800],
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(color: Colors.white, fontSize: 16.0),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

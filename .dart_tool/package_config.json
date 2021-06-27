@@ -278,6 +278,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "fluro",
+      "rootUri": "file:///home/hedighodhbane/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/fluro-2.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///home/hedighodhbane/snap/flutter/common/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -746,7 +752,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-06-27T13:24:16.536137Z",
+  "generated": "2021-06-27T19:30:29.836563Z",
   "generator": "pub",
   "generatorVersion": "2.13.1"
 }
