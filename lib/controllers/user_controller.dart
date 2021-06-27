@@ -1,6 +1,7 @@
 import 'package:aewebshop/model/user.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
+import 'package:aewebshop/screens/widget/auth_wrapper.dart';
 import 'package:aewebshop/utilities/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class UserController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-
     firebaseUser = Rx<User>(auth.currentUser);
     firebaseUser.bindStream(auth.userChanges());
     ever(firebaseUser, _setInitialScreen);
@@ -34,10 +34,15 @@ class UserController extends GetxController {
 
   _setInitialScreen(User user) {
     if (user == null) {
-      // Get.offAll(() => HomePage());
+      Get.defaultDialog(
+          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          title: "Authentification",
+          content: AuthWrapper(),
+          barrierDismissible: true);
     } else {
       userData.bindStream(listenToUser());
-      Get.offAll(HomePage());
+      Get.offAll(() => HomePage());
+      update();
     }
   }
 
@@ -52,14 +57,14 @@ class UserController extends GetxController {
               password: passwordTextEditingController.text.trim())
           .then((result) {
         userData.bindStream(listenToUser());
-
         print("=========================== user sign in =================");
         _clearControllers();
-        Get.offAll(HomePage());
+        dismissLoading();
+        Get.back();
+        // Get.offAll(HomePage());
       });
     } catch (e) {
       dismissLoading();
-      print(e.toString());
       var error = e.toString().split("]");
       var displayError = error[1];
       Get.snackbar(
@@ -87,10 +92,11 @@ class UserController extends GetxController {
       });
     } catch (e) {
       dismissLoading();
-
+      var error = e.toString().split("]");
+      var displayError = error[1];
       Get.snackbar(
         "Error",
-        e.toString(),
+        displayError,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.white,
         colorText: Colors.black,
@@ -123,7 +129,9 @@ class UserController extends GetxController {
         .collection(usersCollection)
         .doc(firebaseUser.value.uid)
         .snapshots()
-        .map((snapshot) => UserData.fromSnapshot(snapshot));
+        .map((snapshot) {
+      return UserData.fromSnapshot(snapshot);
+    });
   }
 
   updateUserData(Map<String, dynamic> data) {
@@ -145,7 +153,6 @@ class UserController extends GetxController {
     try {
       await auth.signOut();
       Get.offAll(HomePage());
-      // Get.offAll(LoginScreen());
       return true;
     } catch (e) {
       return false;

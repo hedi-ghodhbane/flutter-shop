@@ -42,89 +42,83 @@ class NavBar extends StatelessWidget {
 
   Drawer forSmallScreen(buttonStyle) {
     return Drawer(
-      child: Obx(
-        () => Container(
-          color: Colors.white,
-          width: Get.width * 0.5,
-          height: Get.height,
-          child: Column(
-            children: [
-              DrawerHeader(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+      child: Container(
+        color: Colors.white,
+        width: Get.width * 0.5,
+        height: Get.height,
+        child: Column(
+          children: [
+            DrawerHeader(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.red[800],
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 50,
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                    "Welcome " + (_userController?.userData?.value?.name ?? ""),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+              ],
+            )),
+            Container(
+              height: Get.height * 0.5,
+              alignment: Alignment.centerLeft,
+              child: ListView(
                 children: [
-                  CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.red[800],
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 50,
-                      )),
+                  homeButton(buttonStyle),
+                  Divider(
+                    endIndent: 40,
+                    indent: 40,
+                    thickness: 0.5,
+                    color: Colors.grey[200],
+                  ),
+                  shopButtons(buttonStyle),
+                  Divider(
+                    endIndent: 40,
+                    indent: 40,
+                    thickness: 0.5,
+                    color: Colors.grey[200],
+                  ),
+                  ordersbutton(buttonStyle),
+                  Divider(
+                    endIndent: 40,
+                    indent: 40,
+                    thickness: 0.5,
+                    color: Colors.grey[200],
+                  ),
+                  myCartButton(buttonStyle),
+                  Divider(
+                    endIndent: 40,
+                    indent: 40,
+                    thickness: 0.5,
+                    color: Colors.grey[200],
+                  ),
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                      "Welcome " +
-                          (_userController?.userData?.value?.name ?? ""),
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                  logoutButton(buttonStyle, radius: false),
                 ],
-              )),
-              Container(
-                height: Get.height * 0.5,
-                alignment: Alignment.centerLeft,
-                child: ListView(
-                  children: [
-                    homeButton(buttonStyle),
-                    Divider(
-                      endIndent: 40,
-                      indent: 40,
-                      thickness: 0.5,
-                      color: Colors.grey[200],
-                    ),
-                    shopButtons(buttonStyle),
-                    Divider(
-                      endIndent: 40,
-                      indent: 40,
-                      thickness: 0.5,
-                      color: Colors.grey[200],
-                    ),
-                    ordersbutton(buttonStyle),
-                    Divider(
-                      endIndent: 40,
-                      indent: 40,
-                      thickness: 0.5,
-                      color: Colors.grey[200],
-                    ),
-                    myCartButton(buttonStyle),
-                    Divider(
-                      endIndent: 40,
-                      indent: 40,
-                      thickness: 0.5,
-                      color: Colors.grey[200],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    logoutButton(buttonStyle, radius: false),
-                  ],
-                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget forLargeScreen(ButtonStyle buttonStyle) {
-    return Obx(
-      () => Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: buildButtonBar(buttonStyle,
-            userName: _userController.userData.value.name),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: buildButtonBar(buttonStyle,
+          userName: _userController.userData.value.name),
     );
   }
 

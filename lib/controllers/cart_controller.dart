@@ -2,6 +2,7 @@ import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/model/cart_item.dart';
 import 'package:aewebshop/model/product.dart';
 import 'package:aewebshop/model/user.dart';
+import 'package:aewebshop/screens/widget/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +21,14 @@ class CartController extends GetxController {
 
   void addProductToCart(ProductModel product) {
     try {
+      if (userController?.userData?.value?.name == null) {
+        Get.defaultDialog(
+            titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            title: "Authentification",
+            content: AuthWrapper(),
+            barrierDismissible: true);
+        return;
+      }
       if (_isItemAlreadyAdded(product)) {
         Get.snackbar("Check your cart", "${product.name} is already added");
       } else {

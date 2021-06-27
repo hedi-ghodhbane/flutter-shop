@@ -1,10 +1,24 @@
 import 'package:aewebshop/constants/sizes.dart';
+import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/screens/widget/nav_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class UserOrder extends StatelessWidget {
+class UserOrder extends StatefulWidget {
+  @override
+  _UserOrderState createState() => _UserOrderState();
+}
+
+class _UserOrderState extends State<UserOrder> {
+  UserController _userController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    if (_userController.userData.value.name == null) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -44,12 +58,14 @@ class UserOrder extends StatelessWidget {
                   // <2> Pass `Stream<QuerySnapshot>` to stream
                   stream: FirebaseFirestore.instance
                       .collection('orders')
-                      .orderBy("timestamp", descending: true)
+                      // .orderBy("timestamp", descending: true)
+                      .where("id",
+                          isEqualTo: _userController?.userData?.value?.id ?? "")
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data.docs.length == 0) {
-                        return Center(child: Text("No posts at the moment"));
+                        return Center(child: Text("You have no orders"));
                       } else {
                         return ListView.separated(
                           separatorBuilder: (_, __) => Divider(
@@ -72,6 +88,8 @@ class UserOrder extends StatelessWidget {
                           },
                         );
                       }
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
                     } else {
                       return Center(
                         child: CircularProgressIndicator(),
