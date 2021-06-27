@@ -34,15 +34,14 @@ class UserController extends GetxController {
 
   _setInitialScreen(User user) {
     if (user == null) {
-      Get.defaultDialog(
-          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-          title: "Authentification",
-          content: AuthWrapper(),
-          barrierDismissible: true);
+      Get.offAll(() => HomePage());
+      // Get.defaultDialog(
+      //     titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+      //     title: "Authentification",
+      //     content: AuthWrapper(),
+      //     barrierDismissible: true);
     } else {
       userData.bindStream(listenToUser());
-      Get.offAll(() => HomePage());
-      update();
     }
   }
 
@@ -60,7 +59,7 @@ class UserController extends GetxController {
         print("=========================== user sign in =================");
         _clearControllers();
         dismissLoading();
-        Get.back();
+        Get.close(1);
         // Get.offAll(HomePage());
       });
     } catch (e) {
@@ -151,6 +150,27 @@ class UserController extends GetxController {
 
   signOut() async {
     try {
+      final confirm = await Get.defaultDialog<bool>(
+          title: "Confirm Logout",
+          content: SizedBox(
+              width: Get.width * 0.2,
+              height: 70,
+              child: Center(
+                  child: Text(
+                "would you really like to logout ?",
+                textAlign: TextAlign.center,
+              ))),
+          confirm: TextButton(
+              onPressed: () {
+                return Get.back(result: true);
+              },
+              child: Text("Confirm")),
+          cancel: TextButton(
+              onPressed: () {
+                return Get.back(result: false);
+              },
+              child: Text("Cancel")));
+      if ((confirm ?? false) == false) return;
       await auth.signOut();
       Get.offAll(HomePage());
       return true;

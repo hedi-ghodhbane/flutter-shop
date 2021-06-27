@@ -330,7 +330,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 100),
+                SizedBox(height: size == Sizes.Large ? 100 : 20),
                 // size == Sizes.Large || size == Sizes.Medium
                 // ?
                 Row(
@@ -404,14 +404,19 @@ class _PregledArtikalaState extends State<PregledArtikala> {
     return Padding(
       padding: const EdgeInsets.only(left: 40.0, right: 10.0),
       child: Container(
-        width: 400,
+        width: Get.width * 0.4,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: Colors.white,
             border: Border.all(color: Colors.red[800], width: 1.5)),
         child: DropdownButtonHideUnderline(
           child: DropdownButton(
-            hint: Text('Please choose a type'),
+            hint: Text(
+              'Please choose a type',
+              style: TextStyle(
+                  fontSize:
+                      WindowSizes.size(Get.width) == Sizes.Large ? 16 : 14),
+            ),
             isExpanded: true,
             isDense: false,
             iconEnabledColor: Colors.black,
@@ -433,12 +438,18 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                 searchtextEditingController.text = "";
               });
             },
+            style: TextStyle(
+                fontSize: WindowSizes.size(Get.width) == Sizes.Large ? 16 : 14),
             items: itemlist.map((location) {
               return DropdownMenuItem(
                 child: new Container(
                   child: Text(
                     location,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: WindowSizes.size(Get.width) == Sizes.Large
+                            ? 16
+                            : 14),
                   ),
                 ),
                 value: location,
@@ -454,7 +465,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 40.0),
       child: Container(
-        width: 400,
+        width: Get.width * 0.4,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: Colors.white,
@@ -465,7 +476,8 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             focusColor: Colors.white,
             value: _chosenValue,
             //elevation: 5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+                fontSize: WindowSizes.size(Get.width) == Sizes.Large ? 16 : 12),
             iconEnabledColor: Colors.black,
             items: items.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
@@ -474,7 +486,11 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     value,
-                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: WindowSizes.size(Get.width) == Sizes.Large
+                            ? 16
+                            : 14),
                   ),
                 ),
               );
@@ -486,10 +502,12 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize:
+                      WindowSizes.size(Get.width) == Sizes.Large ? 16 : 12,
                 ),
               ),
             ),
+
             onChanged: (String value) {
               setState(() {
                 _chosenValue = value;
@@ -768,136 +786,130 @@ class DetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final screenSize = WindowSizes.size(width);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              icon: Icon(Icons.shopping_cart, color: Colors.black),
-              onPressed: () {
-                userController.userData.value.cart != null
-                    ? showBarModalBottomSheet(
-                        context: context,
-                        builder: (context) => Container(
-                          color: Colors.white,
-                          child: ShoppingCartWidget(),
-                        ),
-                      )
-                    : Get.snackbar("Notice!", "Add Item to cart to view");
-              }),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(5),
+      drawer: screenSize == Sizes.Large
+          ? null
+          : NavBar(
+              size: screenSize,
             ),
-            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-            child: Obx(
-              () => Text(
-                // _auth.isLogged ? _auth.userEmail : "Login",
-                userController.userData.value.name ?? "",
-                style: TextStyle(
-                  color: Colors.black,
+      appBar: screenSize == Sizes.Large
+          ? null
+          : AppBar(
+              title: Text(
+                'Detaljnije o artiklu',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              centerTitle: true,
+              elevation: 0.0,
+              backgroundColor:
+                  screenSize == Sizes.Large ? Colors.white : Colors.red[800],
+            ),
+      body: Stack(
+        children: [
+          Container(
+            child: Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: 400,
+                        aspectRatio: 4 / 3,
+                        enableInfiniteScroll: false,
+                      ),
+                      items: arrayList
+                          .map((item) => Container(
+                                child: Center(
+                                    child: Image.network(item,
+                                        fit: BoxFit.cover, width: 600)),
+                              ))
+                          .toList(),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      "Naziv artikla : $naziv",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Marka : $marka",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Model : $model",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Kataloski broj : $katBr",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      cijena == "1"
+                          ? "Cijena : Po dogovoru"
+                          : "Cijena : $cijena KM",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Kolicina : $kolicina",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Lokacija : $lokacija",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Opis : $opis",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          print(productModel.id);
+                          cartController.addProductToCart(productModel);
+                        },
+                        child: Text("Add to Cart")),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          'Detaljnije o artiklu',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-      ),
-      body: Container(
-        child: Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 400,
-                    aspectRatio: 4 / 3,
-                    enableInfiniteScroll: false,
-                  ),
-                  items: arrayList
-                      .map((item) => Container(
-                            child: Center(
-                                child: Image.network(item,
-                                    fit: BoxFit.cover, width: 600)),
-                          ))
-                      .toList(),
-                ),
-                SizedBox(height: 20.0),
-                Text(
-                  "Naziv artikla : $naziv",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Marka : $marka",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Model : $model",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Kataloski broj : $katBr",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  cijena == "1"
-                      ? "Cijena : Po dogovoru"
-                      : "Cijena : $cijena KM",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Kolicina : $kolicina",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Lokacija : $lokacija",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Opis : $opis",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                TextButton(
-                    onPressed: () {
-                      print(productModel.id);
-                      cartController.addProductToCart(productModel);
-                    },
-                    child: Text("Add to Cart")),
-              ],
+          if (screenSize == Sizes.Large)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: NavBar(
+                // this is to make login button round on the left when background color is white so it looks more beautiful
+                roundLoginButton: true,
+                color: Colors.white,
+              ),
             ),
-          ),
-        ),
+        ],
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/orders.dart';
 import 'package:aewebshop/screens/shopping_cart.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class NavBar extends StatelessWidget {
   final UserController _userController = Get.find();
@@ -36,11 +37,11 @@ class NavBar extends StatelessWidget {
         backgroundColor:
             MaterialStateProperty.resolveWith<Color>((states) => this.color));
     return size == Sizes.Large
-        ? forLargeScreen(buttonStyle)
-        : forSmallScreen(buttonStyle);
+        ? forLargeScreen(buttonStyle, context)
+        : forSmallScreen(buttonStyle, context);
   }
 
-  Drawer forSmallScreen(buttonStyle) {
+  Drawer forSmallScreen(buttonStyle, context) {
     return Drawer(
       child: Container(
         color: Colors.white,
@@ -69,7 +70,7 @@ class NavBar extends StatelessWidget {
               ],
             )),
             Container(
-              height: Get.height * 0.5,
+              height: Get.height * 0.7,
               alignment: Alignment.centerLeft,
               child: ListView(
                 children: [
@@ -94,7 +95,7 @@ class NavBar extends StatelessWidget {
                     thickness: 0.5,
                     color: Colors.grey[200],
                   ),
-                  myCartButton(buttonStyle),
+                  myCartButton(buttonStyle, context),
                   Divider(
                     endIndent: 40,
                     indent: 40,
@@ -114,15 +115,15 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  Widget forLargeScreen(ButtonStyle buttonStyle) {
+  Widget forLargeScreen(ButtonStyle buttonStyle, context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
-      child: buildButtonBar(buttonStyle,
+      child: buildButtonBar(buttonStyle, context,
           userName: _userController.userData.value.name),
     );
   }
 
-  ButtonBar buildButtonBar(ButtonStyle buttonStyle,
+  ButtonBar buildButtonBar(ButtonStyle buttonStyle, context,
       {String userName, bool isRow = true}) {
     return ButtonBar(
       mainAxisSize: MainAxisSize.max,
@@ -134,7 +135,7 @@ class NavBar extends StatelessWidget {
         if (userName != null) showUserButton(buttonStyle, userName: userName),
         homeButton(buttonStyle),
         shopButtons(buttonStyle),
-        myCartButton(buttonStyle),
+        myCartButton(buttonStyle, context),
         ordersbutton(buttonStyle),
         logoutButton(buttonStyle),
       ],
@@ -159,11 +160,19 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  TextButton myCartButton(ButtonStyle buttonStyle) {
+  TextButton myCartButton(ButtonStyle buttonStyle, context) {
     return TextButton.icon(
       style: buttonStyle,
       onPressed: () {
-        Get.to(ShoppingCartWidget());
+        _userController.userData.value.cart != null
+            ? showBarModalBottomSheet(
+                context: context,
+                builder: (context) => Container(
+                  color: Colors.white,
+                  child: ShoppingCartWidget(),
+                ),
+              )
+            : Get.snackbar("Notice!", "Add Item to cart to view");
       },
       icon: Icon(
         Icons.shopping_cart_outlined,

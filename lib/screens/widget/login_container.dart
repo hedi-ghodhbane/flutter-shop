@@ -1,3 +1,4 @@
+import 'package:aewebshop/constants/sizes.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
 import 'package:aewebshop/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,14 @@ class _LoginContainerState extends State<LoginContainer> {
   UserController _userController = Get.find();
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final size = WindowSizes.size(width);
     return Container(
       width: Get.width * 0.5,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 100.0),
+          SizedBox(height: size == Sizes.Large ? 100.0 : 20),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
@@ -79,9 +82,7 @@ class _LoginContainerState extends State<LoginContainer> {
           //   'I forgot my password?',
           //   style: TextStyle(color: Colors.yellow[800], fontSize: 16.0),
           // ),
-          SizedBox(
-            height: 15.0,
-          ),
+
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Container(
