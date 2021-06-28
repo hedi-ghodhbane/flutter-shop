@@ -40,9 +40,14 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   children: [
                     Expanded(
                       flex: 3,
-                      child: IndexedStack(
-                        index: _index,
-                        children: [LoginContainer(), SignupContainer()],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: size == Sizes.Large ? 40 : 8.0),
+                        child: IndexedStack(
+                          index: _index,
+                          children: [LoginContainer(), SignupContainer()],
+                        ),
                       ),
                     ),
                     Padding(

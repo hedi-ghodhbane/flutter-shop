@@ -57,11 +57,11 @@ class UserController extends GetxController {
               email: emailTextEditingController.text.trim(),
               password: passwordTextEditingController.text.trim())
           .then((result) {
-        userData.bindStream(listenToUser());
         print("=========================== user sign in =================");
         clearControllers();
-        dismissLoading();
         BotToast.cleanAll();
+        dismissLoading();
+        userData.bindStream(listenToUser());
         // Get.offAll(HomePage());
       });
     } catch (e) {
