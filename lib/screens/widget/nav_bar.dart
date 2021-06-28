@@ -179,13 +179,7 @@ class NavBar extends StatelessWidget {
       onPressed: () {
         if (_userController?.userData?.value?.cart != null) {
           if ((_userController?.userData?.value?.cart?.length ?? 0) > 0) {
-            showBarModalBottomSheet(
-              context: context,
-              builder: (context) => Container(
-                color: Colors.white,
-                child: ShoppingCartWidget(),
-              ),
-            );
+            Get.to(ShoppingCartWidget());
           } else {
             Get.snackbar("Notice!", "You did not add any item to cart");
           }
