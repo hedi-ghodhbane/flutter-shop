@@ -417,76 +417,80 @@ class _PregledArtikalaState extends State<PregledArtikala> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final size = WindowSizes.size(width);
-    return Container(
-      width: Get.width,
-      height: Get.height,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Scaffold(
-            backgroundColor: Colors.white,
-            appBar: size == Sizes.Large ? null : buildAppBar(size),
-            drawer: size == Sizes.Large
-                ? null
-                : NavBar(
-                    size: size,
+    return Title(
+      title: "Shop",
+      color: Colors.red[800],
+      child: Container(
+        width: Get.width,
+        height: Get.height,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Scaffold(
+              backgroundColor: Colors.white,
+              appBar: size == Sizes.Large ? null : buildAppBar(size),
+              drawer: size == Sizes.Large
+                  ? null
+                  : NavBar(
+                      size: size,
+                    ),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: size == Sizes.Large ? 100 : 20),
+                  // size == Sizes.Large || size == Sizes.Medium
+                  // ?
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(child: buildFirstDropDownList()),
+                      Expanded(child: buildSecondsDropDownList()),
+                    ],
                   ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: size == Sizes.Large ? 100 : 20),
-                // size == Sizes.Large || size == Sizes.Medium
-                // ?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(child: buildFirstDropDownList()),
-                    Expanded(child: buildSecondsDropDownList()),
-                  ],
-                ),
-                // : Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       buildFirstDropDownList(),
-                //       buildSecondsDropDownList(),
-                //     ],
-                //   ),
-                SizedBox(height: 10),
-                Center(
-                  child: buildSearch(),
-                ),
-                SizedBox(height: 30),
-                Expanded(
-                  child: //RefreshIndicator ( child:
+                  // : Column(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: [
+                  //       buildFirstDropDownList(),
+                  //       buildSecondsDropDownList(),
+                  //     ],
+                  //   ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: buildSearch(),
+                  ),
+                  SizedBox(height: 30),
+                  Expanded(
+                    child: //RefreshIndicator ( child:
 
-                      Column(children: [
-                    Expanded(
-                        child: products.length == 0
-                            ? buildNoDataDisplay(context)
-                            : buildGrid(context, size)),
-                    isLoading ? buildLoading(context) : Container()
-                  ]),
-                  //   onRefresh: () async {
-                  //     //refreshChangeListener.refreshed = true;
-                  // },
-                  // )
-                )
-              ],
-            ),
-          ),
-          if (size == Sizes.Large)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: NavBar(
-                // this is to make login button round on the left when background color is white so it looks more beautiful
-                roundLoginButton: true,
-                color: Colors.white,
+                        Column(children: [
+                      Expanded(
+                          child: products.length == 0
+                              ? buildNoDataDisplay(context)
+                              : buildGrid(context, size)),
+                      isLoading ? buildLoading(context) : Container()
+                    ]),
+                    //   onRefresh: () async {
+                    //     //refreshChangeListener.refreshed = true;
+                    // },
+                    // )
+                  )
+                ],
               ),
             ),
-        ],
+            if (size == Sizes.Large)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: NavBar(
+                  // this is to make login button round on the left when background color is white so it looks more beautiful
+                  roundLoginButton: true,
+                  color: Colors.white,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

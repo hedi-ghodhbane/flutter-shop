@@ -24,91 +24,99 @@ class _UserOrderState extends State<UserOrder> {
     var size = MediaQuery.of(context).size;
     final width = MediaQuery.of(context).size.width;
     final screenSize = WindowSizes.size(width);
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: screenSize == Sizes.Large
-              ? null
-              : AppBar(
-                  backgroundColor: Colors.red[800],
-                  elevation: 0.0,
-                  // leading: IconButton(
-                  //   icon: Icon(Icons.arrow_back, color: Colors.black),
-                  //   onPressed: () => Get.back(),
-                  // ),
-                  centerTitle: true,
-                  title: Text("O R D E R S",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      )),
-                ),
-          drawer: screenSize == Sizes.Large
-              ? null
-              : NavBar(
-                  size: screenSize,
-                ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 10, vertical: screenSize == Sizes.Large ? 100 : 20),
-            child: Container(
-              height: size.height,
-              width: size.width,
-              child: StreamBuilder<QuerySnapshot>(
-                  // <2> Pass `Stream<QuerySnapshot>` to stream
-                  stream: FirebaseFirestore.instance
-                      .collection('orders')
-                      // .orderBy("timestamp", descending: true)
-                      .where("id",
-                          isEqualTo: _userController?.userData?.value?.id ?? "")
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data.docs.length == 0) {
-                        return Center(child: Text("You have no orders"));
+    return Title(
+      color: Colors.red[100],
+      title: "Orders",
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: screenSize == Sizes.Large
+                ? null
+                : AppBar(
+                    backgroundColor: Colors.red[800],
+                    elevation: 0.0,
+                    // leading: IconButton(
+                    //   icon: Icon(Icons.arrow_back, color: Colors.black),
+                    //   onPressed: () => Get.back(),
+                    // ),
+                    centerTitle: true,
+                    title: Text("O R D E R S",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )),
+                  ),
+            drawer: screenSize == Sizes.Large
+                ? null
+                : NavBar(
+                    size: screenSize,
+                  ),
+            body: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: screenSize == Sizes.Large ? 100 : 20),
+              child: Container(
+                height: size.height,
+                width: size.width,
+                child: StreamBuilder<QuerySnapshot>(
+                    // <2> Pass `Stream<QuerySnapshot>` to stream
+                    stream: FirebaseFirestore.instance
+                        .collection('orders')
+                        // .orderBy("timestamp", descending: true)
+                        .where("id",
+                            isEqualTo:
+                                _userController?.userData?.value?.id ?? "")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data.docs.length == 0) {
+                          return Center(child: Text("You have no orders"));
+                        } else {
+                          return ListView.separated(
+                            separatorBuilder: (_, __) => Divider(
+                              color: Colors.grey[400],
+                              height: 5,
+                              indent: 10.0,
+                              thickness: 0.5,
+                            ),
+                            itemCount: snapshot.data.docs.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              print(snapshot.data.docs[index].data());
+                              // return postThread(
+                              //   title: snapshot.data.docs[index].data()["Title"],
+                              //   description:
+                              //       snapshot.data.docs[index].data()["Description"],
+                              // );
+                              return orderThread(
+                                  snapshot.data.docs[index].data(),
+                                  index,
+                                  context);
+                            },
+                          );
+                        }
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
                       } else {
-                        return ListView.separated(
-                          separatorBuilder: (_, __) => Divider(
-                            color: Colors.grey[400],
-                            height: 5,
-                            indent: 10.0,
-                            thickness: 0.5,
-                          ),
-                          itemCount: snapshot.data.docs.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            print(snapshot.data.docs[index].data());
-                            // return postThread(
-                            //   title: snapshot.data.docs[index].data()["Title"],
-                            //   description:
-                            //       snapshot.data.docs[index].data()["Description"],
-                            // );
-                            return orderThread(snapshot.data.docs[index].data(),
-                                index, context);
-                          },
+                        return Center(
+                          child: CircularProgressIndicator(),
                         );
                       }
-                    } else if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  }),
+                    }),
+              ),
             ),
           ),
-        ),
-        if (screenSize == Sizes.Large)
-          Positioned(
-            top: 0,
-            right: 0,
-            child: NavBar(
-              roundLoginButton: true,
-              color: Colors.transparent,
+          if (screenSize == Sizes.Large)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: NavBar(
+                roundLoginButton: true,
+                color: Colors.transparent,
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:fluro/fluro.dart' as fr;
 
 import 'package:aewebshop/controllers/cart_controller.dart';
 import 'package:aewebshop/controllers/order_controller.dart';
@@ -32,7 +33,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
       initialRoute: "/",
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
