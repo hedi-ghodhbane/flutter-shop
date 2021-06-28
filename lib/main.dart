@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:aewebshop/controllers/cart_controller.dart';
 import 'package:aewebshop/controllers/order_controller.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
+import 'package:aewebshop/routes.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -18,6 +19,7 @@ void main() async {
   Get.put(UserController());
   Get.put(CartController());
   Get.put(OrderController());
+  Flurorouter.setupRouter();
   await GetStorage.init();
 
   await Firebase.initializeApp();
@@ -31,11 +33,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
+      initialRoute: "/",
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: ("Montserrat")),
-      home: SplashScreen(),
+      onGenerateRoute: Flurorouter.router.generator,
     );
   }
 }
@@ -50,6 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     navigate();
     print("user from firebase " + user.toString());
     //navigate();

@@ -28,6 +28,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
   bool isSearchtext = true;
   String searchtext = "";
   List<String> items = <String>[
+    'All',
     'ABS sistemi',
     'Airbagovi',
     'Akumulatori',
@@ -162,6 +163,9 @@ class _PregledArtikalaState extends State<PregledArtikala> {
   DocumentSnapshot
       lastDocument; // flag for last document from where next 10 records to be fetched
 
+  bool addedLastDoc = false;
+  bool queryInitiated = false;
+
   ScrollController _scrollController =
       ScrollController(); // listener for listview scrolling
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -186,6 +190,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
         } else if (selectedItem == "Car Model") {
           searchBy = "s_brand";
         }
+        addedLastDoc = false;
         getProducts(searchtextEditingController.text.trim(), searchBy, false);
       }
     });
@@ -193,6 +198,7 @@ class _PregledArtikalaState extends State<PregledArtikala> {
 
   getProducts(
       String search_text, String search_type, bool hasSearchChanged) async {
+    print("=============================================================");
     print("search text => " + search_text);
     print("search type => " + search_type);
     QuerySnapshot querySnapshot;
@@ -214,21 +220,44 @@ class _PregledArtikalaState extends State<PregledArtikala> {
       }
       if (lastDocument == null) {
         print('Initial DOC');
-        querySnapshot = await firestore
-            .collection('artikli')
-            //.where(search_type, isGreaterThanOrEqualTo: search_text).where(search_type, isLessThanOrEqualTo: search_text+'z')
-            .orderBy('s_name')
-            .limit(documentLimit)
-            .get();
+        if (_chosenValue == 'All') {
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .orderBy('s_name')
+              .limit(documentLimit)
+              .get();
+        } else {
+          print("CHOOSEN VALUE 1 => " + _chosenValue);
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .where('k', isEqualTo: _chosenValue)
+              .orderBy('s_name')
+              .limit(documentLimit)
+              .get();
+        }
       } else {
         print('Pagination DOC');
-        querySnapshot = await firestore
-            .collection('artikli')
-            //.where(search_type, isGreaterThanOrEqualTo: search_text).where(search_type, isLessThanOrEqualTo: search_text+'z')
-            .orderBy('s_name')
-            .limit(documentLimit)
-            .startAfterDocument(lastDocument)
-            .get();
+        if (_chosenValue == 'All') {
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .orderBy('s_name')
+              .limit(documentLimit)
+              .startAfterDocument(lastDocument)
+              .get();
+        } else {
+          print("CHOOSEN VALUE 2 => " + _chosenValue);
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .where('k', isEqualTo: _chosenValue)
+              .orderBy('s_name')
+              .limit(documentLimit)
+              .startAfterDocument(lastDocument)
+              .get();
+        }
       }
     } else {
       if (hasSearchChanged) {
@@ -241,44 +270,116 @@ class _PregledArtikalaState extends State<PregledArtikala> {
       }
       if (lastDocument == null) {
         print('SEARCH: Initial DOC');
-        querySnapshot = await firestore
-            .collection('artikli')
-            .where(search_type,
-                isGreaterThanOrEqualTo: search_text.toLowerCase())
-            .where(search_type,
-                isLessThanOrEqualTo: search_text.toLowerCase() + 'z')
-            .orderBy(search_type)
-            .limit(documentLimit)
-            .get();
+        if (_chosenValue == 'All') {
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .where(search_type,
+                  isGreaterThanOrEqualTo: search_text.toLowerCase())
+              .where(search_type,
+                  isLessThanOrEqualTo: search_text.toLowerCase() + 'z')
+              .orderBy(search_type)
+              .limit(documentLimit)
+              .get();
+        } else {
+          print("CHOOSEN VALUE 3 => " + _chosenValue);
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .where(search_type,
+                  isGreaterThanOrEqualTo: search_text.toLowerCase())
+              .where(search_type,
+                  isLessThanOrEqualTo: search_text.toLowerCase() + 'z')
+              .where('k', isEqualTo: _chosenValue)
+              .orderBy(search_type)
+              .limit(documentLimit)
+              .get();
+        }
       } else {
         print('SEARCH: Pagination DOC');
-        querySnapshot = await firestore
-            .collection('artikli')
-            .where(search_type,
-                isGreaterThanOrEqualTo: search_text.toLowerCase())
-            .where(search_type,
-                isLessThanOrEqualTo: search_text.toLowerCase() + 'z')
-            .orderBy(search_type)
-            .limit(documentLimit)
-            .startAfterDocument(lastDocument)
-            .get();
+        if (_chosenValue == 'All') {
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .where(search_type,
+                  isGreaterThanOrEqualTo: search_text.toLowerCase())
+              .where(search_type,
+                  isLessThanOrEqualTo: search_text.toLowerCase() + 'z')
+              .orderBy(search_type)
+              .limit(documentLimit)
+              .startAfterDocument(lastDocument)
+              .get();
+        } else {
+          print("CHOOSEN VALUE 4 => " + _chosenValue);
+          queryInitiated = true;
+          querySnapshot = await firestore
+              .collection('artikli')
+              .where(search_type,
+                  isGreaterThanOrEqualTo: search_text.toLowerCase())
+              .where(search_type,
+                  isLessThanOrEqualTo: search_text.toLowerCase() + 'z')
+              .where('k', isEqualTo: _chosenValue)
+              .orderBy(search_type)
+              .limit(documentLimit)
+              .startAfterDocument(lastDocument)
+              .get();
+        }
       }
     }
 
-    if (querySnapshot.docs.length < documentLimit) {
+    /*if (lastDocument == null) {
+      print('Initial DOC');
+      querySnapshot = await firestore
+          .collection('artikli')
+          //.where(search_type, isGreaterThanOrEqualTo: search_text).where(search_type, isLessThanOrEqualTo: search_text+'z')
+          .orderBy(search_type)
+          .limit(documentLimit)
+          .get();
+    } else {
+      print('Pagination DOC');
+      querySnapshot = await firestore
+          .collection('artikli').where(search_type, isGreaterThanOrEqualTo: search_text).where(search_type, isLessThanOrEqualTo: search_text+'z')
+          .orderBy(search_type)
+          .limit(documentLimit)
+          .startAfterDocument(lastDocument)
+          .get();
+    }*/
+    var articleArray = querySnapshot.docs;
+    if (articleArray.length < documentLimit) {
       hasMore = false;
       //lastDocument = null;
     }
-    if (querySnapshot.docs.length > 0) {
-      lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
+    if (articleArray.length > 0 && !addedLastDoc) {
+      print("Added LAST DOCUMENT");
+      addedLastDoc = true;
+      lastDocument = articleArray[articleArray.length - 1];
+
+      if (queryInitiated) {
+        print("Adding All ITEM ==> BEFORE :" + products.length.toString());
+        products.addAll(articleArray);
+        print("AFTER :" + products.length.toString());
+        queryInitiated = false;
+      }
     }
-    products.addAll(querySnapshot.docs);
+
+    if (products.length == 0 && queryInitiated) {
+      print("Adding All ITEM ==> BEFORE :" + products.length.toString());
+      products.addAll(articleArray);
+      print("AFTER :" + products.length.toString());
+
+      print("Added LAST DOCUMENT");
+      addedLastDoc = true;
+      lastDocument = articleArray[articleArray.length - 1];
+
+      queryInitiated = false;
+    }
+
     setState(() {
       isLoading = false;
     });
   }
 
-  String _chosenValue;
+  String _chosenValue = 'All';
 
   @override
   void dispose() {
@@ -304,6 +405,8 @@ class _PregledArtikalaState extends State<PregledArtikala> {
         searchBy = "s_brand";
       }
     }
+    products = [];
+    addedLastDoc = true;
     getProducts(value, searchBy, true);
   }
 
@@ -512,6 +615,9 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             onChanged: (String value) {
               setState(() {
                 _chosenValue = value;
+                print(_chosenValue);
+                addedLastDoc = true;
+                getProducts("", "", true);
               });
             },
           ),
@@ -664,22 +770,13 @@ class _PregledArtikalaState extends State<PregledArtikala> {
                   productModel.price = double.parse(cijena);
                   productModel.model = model;
                   productModel.image = arrayList[0];
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailWidget(
-                              userController: userController,
-                              arrayList: arrayList,
-                              naziv: naziv,
-                              marka: marka,
-                              model: model,
-                              katBr: katBr,
-                              cijena: cijena,
-                              kolicina: kolicina,
-                              lokacija: lokacija,
-                              opis: opis,
-                              productModel: productModel,
-                              cartController: cartController)));
+                  Get.toNamed('/product/' + products[index].id);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => DetailWidget(
+                  //               productId: id,
+                  //             )));
                 },
               );
             })),
@@ -755,391 +852,5 @@ class _PregledArtikalaState extends State<PregledArtikala> {
             : SizedBox(),
       ),
     );
-  }
-}
-
-class DetailWidget extends StatefulWidget {
-  const DetailWidget({
-    Key key,
-    @required this.userController,
-    @required this.arrayList,
-    @required this.price,
-    @required this.naziv,
-    @required this.marka,
-    @required this.model,
-    @required this.katBr,
-    @required this.cijena,
-    @required this.kolicina,
-    @required this.lokacija,
-    @required this.opis,
-    @required this.productModel,
-    @required this.cartController,
-  }) : super(key: key);
-
-  final UserController userController;
-  final List<String> arrayList;
-  final String naziv;
-  final String marka;
-  final String model;
-  final String katBr;
-  final String price;
-  final String cijena;
-  final String kolicina;
-  final String lokacija;
-  final String opis;
-  final ProductModel productModel;
-  final CartController cartController;
-
-  @override
-  _DetailWidgetState createState() => _DetailWidgetState();
-}
-
-class _DetailWidgetState extends State<DetailWidget> {
-  var i = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final screenSize = WindowSizes.size(width);
-    return Scaffold(
-        backgroundColor: Colors.white,
-        drawer: screenSize == Sizes.Large
-            ? null
-            : NavBar(
-                size: screenSize,
-              ),
-        appBar: screenSize == Sizes.Large
-            ? null
-            : AppBar(
-                title: Text(
-                  'Detaljnije o artiklu',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                centerTitle: true,
-                elevation: 0.0,
-                backgroundColor:
-                    screenSize == Sizes.Large ? Colors.white : Colors.red[800],
-              ),
-        body: Stack(
-          children: [
-            Container(
-                height: MediaQuery.of(context).size.height - 100,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: screenSize == Sizes.Large
-                            ? 100
-                            : screenSize == Sizes.Medium
-                                ? 50
-                                : 10,
-                      ),
-                      Flex(
-                        direction: screenSize == Sizes.Large
-                            ? Axis.horizontal
-                            : Axis.vertical,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                child: Center(
-                                    child: Image.network(widget.arrayList[i],
-                                        fit: BoxFit.cover, width: 500)),
-                              ),
-                              Container(
-                                width: 500,
-                                height: 100,
-                                child: CarouselSlider(
-                                  options: CarouselOptions(
-                                    scrollDirection: Axis.horizontal,
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 0.2,
-                                  ),
-                                  items: widget.arrayList
-                                      .map((item) => Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  i = widget.arrayList
-                                                      .indexOf(item);
-                                                });
-                                              },
-                                              child: Container(
-                                                child: Opacity(
-                                                  opacity: i ==
-                                                          widget.arrayList
-                                                              .indexOf(item)
-                                                      ? 0.5
-                                                      : 1,
-                                                  child: Center(
-                                                      child: Image.network(item,
-                                                          fit: BoxFit.cover,
-                                                          width: 100)),
-                                                ),
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 20.0),
-                                  Text(
-                                    "${widget.naziv}",
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 50),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Marka : ",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                      Text(
-                                        " ${widget.marka}",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Model : ",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: screenSize == Sizes.Large
-                                                ? 18.0
-                                                : 14,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        "${widget.model}",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Kataloski broj : ",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: screenSize == Sizes.Large
-                                                ? 18.0
-                                                : 14,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        "${widget.katBr}",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Cijena : ",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: screenSize == Sizes.Large
-                                                ? 18.0
-                                                : 14,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        widget.cijena == "1"
-                                            ? "Po dogovoru"
-                                            : "${widget.cijena} KM",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Kolicina : ",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: screenSize == Sizes.Large
-                                                ? 18.0
-                                                : 14,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        "${widget.kolicina}",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Lokacija :",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: screenSize == Sizes.Large
-                                                ? 18.0
-                                                : 14,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        "${widget.lokacija}",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 30),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Opis : ",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: screenSize == Sizes.Large
-                                                ? 18.0
-                                                : 14,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        "${widget.opis}",
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          fontSize: screenSize == Sizes.Large
-                                              ? 18.0
-                                              : 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20.0),
-                                ],
-                              ),
-                              Divider(
-                                color: Colors.grey,
-                                thickness: 2,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Cijena : ",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: screenSize == Sizes.Large
-                                            ? 18.0
-                                            : 14,
-                                        color: Colors.grey),
-                                  ),
-                                  Text(
-                                    widget.cijena == "1"
-                                        ? "Po dogovoru"
-                                        : "${widget.cijena} KM",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize:
-                                          screenSize == Sizes.Large ? 18.0 : 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 30.0),
-                              Center(
-                                child: CustomButton(
-                                    bgColor: Colors.blue[300],
-                                    onTap: () {
-                                      print(widget.productModel.id);
-                                      widget.cartController.addProductToCart(
-                                          widget.productModel);
-                                    },
-                                    text: ("Add to Cart")),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )),
-            if (screenSize == Sizes.Large)
-              Positioned(
-                top: 0,
-                right: 0,
-                child: NavBar(
-                  // this is to make login button round on the left when background color is white so it looks more beautiful
-                  roundLoginButton: true,
-                  color: Colors.white,
-                ),
-              ),
-          ],
-        ));
   }
 }

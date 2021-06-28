@@ -100,7 +100,7 @@ class ShoppingCartWidget extends StatelessWidget {
                                           screenSize == Sizes.Large ? 20 : 10)),
                             )),
                           ],
-                          rows: userController.userData.value.cart
+                          rows: (userController.userData.value.cart ?? [])
                               .map(
                                 (cartItem) => DataRow(cells: <DataCell>[
                                   DataCell(Row(
@@ -132,7 +132,7 @@ class ShoppingCartWidget extends StatelessWidget {
                                             size: screenSize == Sizes.Large
                                                 ? 20
                                                 : 10,
-                                            text: cartItem.name,
+                                            text: cartItem?.name,
                                           )),
                                     ],
                                   )),
@@ -146,7 +146,7 @@ class ShoppingCartWidget extends StatelessWidget {
                                           size: screenSize == Sizes.Large
                                               ? 20
                                               : 12,
-                                          text: cartItem.price.toString(),
+                                          text: cartItem?.price.toString(),
                                         )),
                                   ),
                                   DataCell(
@@ -156,7 +156,7 @@ class ShoppingCartWidget extends StatelessWidget {
                                       child: CustomText(
                                         size:
                                             screenSize == Sizes.Large ? 20 : 12,
-                                        text: "\$${cartItem.cost}",
+                                        text: "\$${cartItem?.cost}",
                                         weight: FontWeight.bold,
                                       ),
                                     ),

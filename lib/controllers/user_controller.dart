@@ -1,4 +1,5 @@
 import 'package:aewebshop/model/user.dart';
+import 'package:aewebshop/routes.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/homepage.dart';
 import 'package:aewebshop/screens/widget/auth_wrapper.dart';
@@ -35,7 +36,6 @@ class UserController extends GetxController {
 
   _setInitialScreen(User user) {
     if (user == null) {
-      Get.offAll(() => HomePage());
       // Get.defaultDialog(
       //     titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
       //     title: "Authentification",
@@ -178,7 +178,7 @@ class UserController extends GetxController {
       if ((confirm ?? false) == false) return;
       await auth.signOut().then((value) {
         userData.value.name = null;
-        Get.offAll(HomePage());
+        Get.offAllNamed(Flurorouter.home);
       });
 
       return true;

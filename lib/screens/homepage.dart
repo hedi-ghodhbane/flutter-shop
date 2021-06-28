@@ -1,5 +1,6 @@
 import 'package:aewebshop/constants/sizes.dart';
 import 'package:aewebshop/controllers/user_controller.dart';
+import 'package:aewebshop/routes.dart';
 import 'package:aewebshop/screens/auth/login_screen.dart';
 import 'package:aewebshop/screens/preartiki.dart';
 import 'package:aewebshop/screens/widget/nav_bar.dart';
@@ -95,10 +96,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                     splashColor: Colors.grey,
                     onPressed: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PregledArtikala()));
+                      Get.toNamed(Flurorouter.shop);
                     },
                     child: Text("Pretraga autodijelova"))
               ],

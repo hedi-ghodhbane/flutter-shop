@@ -13,14 +13,30 @@ class CartController extends GetxController {
   static CartController instance = Get.find();
   RxDouble totalCartPrice = 0.0.obs;
   UserController userController = Get.find();
-
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   void onReady() {
     super.onReady();
     ever(userController.userData, changeCartTotalPrice);
   }
 
-  void addProductToCart(ProductModel product) {
+  dynamic getProductDetails(String productId) async {
+    try {
+      final DocumentSnapshot querySnapshot =
+          await firestore.collection('artikli').doc(productId).get();
+      if (querySnapshot.data() != null) {
+        return ProductDetailModel.fromMap(querySnapshot.data());
+      }
+      print(" --- product details " + querySnapshot.data().toString());
+      // return ProductModel.fromMap(querySnapshot)
+    } catch (e) {
+      print("error from get product details");
+      print(e);
+      return null;
+    }
+  }
+
+  void addProductToCart(ProductDetailModel product) {
     try {
       if (userController?.userData?.value?.name == null) {
         // Get.defaultDialog(
@@ -79,7 +95,7 @@ class CartController extends GetxController {
     }
   }
 
-  bool _isItemAlreadyAdded(ProductModel product) =>
+  bool _isItemAlreadyAdded(ProductDetailModel product) =>
       userController.userData.value.cart
           .where((item) => item.productId == product.id)
           .isNotEmpty;

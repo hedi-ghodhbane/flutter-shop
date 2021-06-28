@@ -1,4 +1,5 @@
 import 'package:aewebshop/constants/sizes.dart';
+import 'package:aewebshop/routes.dart';
 import 'package:aewebshop/screens/homepage.dart';
 import 'package:aewebshop/screens/preartiki.dart';
 import 'package:aewebshop/screens/widget/auth_wrapper.dart';
@@ -179,7 +180,7 @@ class NavBar extends StatelessWidget {
       onPressed: () {
         if (_userController?.userData?.value?.cart != null) {
           if ((_userController?.userData?.value?.cart?.length ?? 0) > 0) {
-            Get.to(ShoppingCartWidget());
+            Get.toNamed(Flurorouter.cart);
           } else {
             Get.snackbar("Notice!", "You did not add any item to cart");
           }
@@ -206,7 +207,7 @@ class NavBar extends StatelessWidget {
                       _userController.userData.value.name == null ? 10 : 0)))),
         ),
         onPressed: () {
-          Get.to(HomePage());
+          Get.toNamed(Flurorouter.home);
         },
         icon: Icon(
           Icons.home_outlined,
@@ -222,7 +223,7 @@ class NavBar extends StatelessWidget {
     return TextButton.icon(
       style: buttonStyle,
       onPressed: () {
-        Get.to(PregledArtikala());
+        Get.toNamed(Flurorouter.shop);
       },
       icon: Icon(
         mIcons.MdiIcons.shopping,
@@ -237,7 +238,7 @@ class NavBar extends StatelessWidget {
     return TextButton.icon(
       style: buttonStyle,
       onPressed: () {
-        Get.to(UserOrder());
+        Get.toNamed(Flurorouter.orders);
       },
       icon: Icon(
         Icons.list_alt_outlined,
