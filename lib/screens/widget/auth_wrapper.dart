@@ -32,46 +32,75 @@ class _AuthWrapperState extends State<AuthWrapper> {
           alignment: Alignment.center,
           children: [
             Container(
-              width: size == Sizes.Large ? Get.width * 0.5 : Get.width * 0.8,
+              margin: EdgeInsets.only(top: size == Sizes.Large ? 0 : 50),
+              width: size == Sizes.Large ? Get.width * 0.6 : Get.width * 0.8,
               height: size == Sizes.Large ? Get.height * 0.5 : Get.height * 0.6,
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: size == Sizes.Large ? 40 : 8.0),
-                        child: IndexedStack(
-                          index: _index,
-                          children: [LoginContainer(), SignupContainer()],
-                        ),
+                    Container(
+                      color: Colors.red[800],
+                      child: Center(
+                        child: Text(
+                            _index == 0 ? "Welcome with us" : "Welcome Back !",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900)),
                       ),
+                      width:
+                          size == Sizes.Large ? Get.width * 0.2 : Get.width * 0,
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 45.0,
-                        width: size == Sizes.Large
-                            ? Get.width * 0.3
-                            : Get.width * 0.6,
-                        // ignore: deprecated_member_use
-                        child: FlatButton(
-                          onPressed: () {
-                            _userController.clearControllers();
-                            setState(() {
-                              _index = _index == 0 ? 1 : 0;
-                            });
-                          },
-                          color: Colors.amber[600],
-                          child: Text(
-                            _index == 0 ? 'Create New Account' : 'Login',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16.0),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: size == Sizes.Large ? 40 : 8.0),
+                                child: IndexedStack(
+                                  index: _index,
+                                  children: [
+                                    Center(child: LoginContainer()),
+                                    Center(child: SignupContainer())
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: Container(
+                                height: 45.0,
+                                width: Get.width * 0.3,
+
+                                // ignore: deprecated_member_use
+                                child: Center(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _index = _index == 0 ? 1 : 0;
+                                      });
+                                    },
+                                    child: Text(
+                                        _index == 0
+                                            ? "Don't have an account ? Singup"
+                                            : 'You already have an account ? login',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: size == Sizes.Large
+                                                ? 16.0
+                                                : 8)),
+                                  ),
+                                )),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -79,8 +108,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
               ),
             ),
             Positioned(
+                top: 20,
+                left: size == Sizes.Large ? Get.width * 0.21 : 10,
+                child: Text(
+                  _index == 0 ? "Login" : "Signup",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                )),
+            Positioned(
               top: 5,
-              right: 5,
+              right: 10,
               child: GestureDetector(
                   onTap: () {
                     BotToast.cleanAll();

@@ -20,77 +20,86 @@ class _SignupContainerState extends State<SignupContainer> {
     final width = MediaQuery.of(context).size.width;
     final size = WindowSizes.size(width);
     return Container(
-      width: Get.width * 0.5,
+      width: size == Sizes.Large ? Get.width * 0.3 : Get.width * 0.6,
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 20,
+              height: 30,
             ),
-            TextFormField(
-              controller: _userController.fullnameTextEditingController,
-              keyboardType: TextInputType.text,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                hintText: 'Fullname',
-                labelText: 'Fullname',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+            Container(
+              height: size == Sizes.Large ? 55 : 50,
+              child: TextFormField(
+                controller: _userController.fullnameTextEditingController,
+                keyboardType: TextInputType.text,
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: 'Fullname',
+                  labelText: 'Fullname',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red, width: 0.5),
+                  ),
+                  hintStyle: TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(color: Colors.black),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 0.5),
-                ),
-                hintStyle: TextStyle(color: Colors.black),
-                labelStyle: TextStyle(color: Colors.black),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.2),
               ),
             ),
             SizedBox(
               height: 15.0,
             ),
-            TextFormField(
-              controller: _userController.emailTextEditingController,
-              obscureText: false,
-              keyboardType: TextInputType.emailAddress,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                hintText: 'Email',
-                labelText: 'Email',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+            Container(
+              height: size == Sizes.Large ? 55 : 50,
+              child: TextFormField(
+                controller: _userController.emailTextEditingController,
+                obscureText: false,
+                keyboardType: TextInputType.emailAddress,
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  labelText: 'Email',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red, width: 0.5),
+                  ),
+                  hintStyle: TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(color: Colors.black),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 0.5),
-                ),
-                hintStyle: TextStyle(color: Colors.black),
-                labelStyle: TextStyle(color: Colors.black),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.2),
               ),
             ),
             SizedBox(
-              height: 5.0,
+              height: 15.0,
             ),
-            TextFormField(
-              controller: _userController.passwordTextEditingController,
-              obscureText: true,
-              keyboardType: TextInputType.text,
-              style: TextStyle(color: Colors.red[800]),
-              decoration: InputDecoration(
-                hintText: 'Password',
-                labelText: 'Password',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+            SizedBox(
+              height: size == Sizes.Large ? 55 : 50,
+              child: TextFormField(
+                controller: _userController.passwordTextEditingController,
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                style: TextStyle(color: Colors.red[800]),
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  labelText: 'Password',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red[800], width: 0.5),
+                  ),
+                  hintStyle: TextStyle(color: Colors.red[800]),
+                  labelStyle: TextStyle(color: Colors.red[800]),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red[800], width: 0.5),
-                ),
-                hintStyle: TextStyle(color: Colors.red[800]),
-                labelStyle: TextStyle(color: Colors.red[800]),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.2),
               ),
             ),
             SizedBox(
@@ -98,7 +107,7 @@ class _SignupContainerState extends State<SignupContainer> {
             ),
             Container(
               width: double.infinity,
-              height: 45.0,
+              height: size == Sizes.Large ? 45 : 40,
               // ignore: deprecated_member_use
               child: FlatButton(
                 onPressed: () {
